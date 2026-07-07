@@ -47,9 +47,9 @@ export default function NavigationTool({ stadiumId, stadium }) {
       <div className="card">
         <div className="flex items-center gap-3 mb-5">
           <Map size={20} className="text-[#00A8E0]" />
-          <h2 className="font-semibold text-gray-900 text-lg">AI Indoor Navigation</h2>
+          <h2 className="font-semibold text-white text-lg">AI Indoor Navigation</h2>
           {stadium && (
-            <span className="badge bg-gray-50 text-gray-600 border border-gray-200">
+            <span className="badge bg-gray-800 text-gray-400 border border-gray-700">
               {stadium.name}
             </span>
           )}
@@ -63,7 +63,7 @@ export default function NavigationTool({ stadiumId, stadium }) {
               <button
                 key={r.from + r.to}
                 onClick={() => applyQuickRoute(r)}
-                className="text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full transition-all flex items-center gap-1"
+                className="text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 px-3 py-1.5 rounded-full transition-all flex items-center gap-1"
               >
                 {r.from} <ArrowRight size={10} /> {r.to}
               </button>
@@ -74,27 +74,27 @@ export default function NavigationTool({ stadiumId, stadium }) {
         {/* Form */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="text-xs text-gray-600 mb-1.5 block">📍 From</label>
+            <label className="text-xs text-gray-400 mb-1.5 block">📍 From</label>
             <input className="input" placeholder="e.g. Gate A, Section 112, Parking Lot" value={from} onChange={e => setFrom(e.target.value)} />
           </div>
           <div>
-            <label className="text-xs text-gray-600 mb-1.5 block">🎯 To</label>
+            <label className="text-xs text-gray-400 mb-1.5 block">🎯 To</label>
             <input className="input" placeholder="e.g. Section 301, Medical Station, Exit" value={to} onChange={e => setTo(e.target.value)} />
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 mb-5">
           <div>
-            <label className="text-xs text-gray-600 mb-1.5 block">🌐 Language</label>
+            <label className="text-xs text-gray-400 mb-1.5 block">🌐 Language</label>
             <select className="select w-36" value={language} onChange={e => setLanguage(e.target.value)}>
               {LANGUAGES.map(l => <option key={l}>{l}</option>)}
             </select>
           </div>
           <label className="flex items-center gap-2 cursor-pointer mt-4">
-            <div className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-100'} relative`}>
+            <div className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-700'} relative`}>
               <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${accessibility ? 'left-5' : 'left-1'}`} />
             </div>
-            <span className="text-sm text-gray-700 flex items-center gap-1.5">
+            <span className="text-sm text-gray-300 flex items-center gap-1.5">
               <Accessibility size={14} className="text-[#00A8E0]" /> Accessibility Route
             </span>
             <input type="checkbox" className="hidden" checked={accessibility} onChange={e => setAccessibility(e.target.checked)} />
@@ -114,14 +114,14 @@ export default function NavigationTool({ stadiumId, stadium }) {
         <div className="card fade-in-up">
           <div className="flex items-center gap-2 mb-4">
             <Navigation size={18} className="text-[#FFD700]" />
-            <span className="font-semibold text-gray-900">Navigation Instructions</span>
+            <span className="font-semibold text-white">Navigation Instructions</span>
             {accessibility && (
               <span className="badge bg-blue-900/40 text-blue-400">
                 <Accessibility size={10} /> Accessible Route
               </span>
             )}
           </div>
-          <div className="bg-gray-50/50 rounded-xl p-4">
+          <div className="bg-gray-800/50 rounded-xl p-4">
             <p className="text-gray-200 text-sm leading-relaxed whitespace-pre-wrap">{result}</p>
           </div>
           <div className="mt-3 text-xs text-gray-500 flex items-center gap-1">

@@ -22,9 +22,9 @@ function TypingDots() {
   return (
     <div className="flex items-end gap-2">
       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#003DA5] to-[#00A8E0] flex items-center justify-center flex-shrink-0 shadow-lg">
-        <Bot size={15} className="text-gray-900" />
+        <Bot size={15} className="text-white" />
       </div>
-      <div className="bg-gray-50 border border-gray-200 rounded-2xl rounded-bl-sm px-4 py-3">
+      <div className="bg-gray-800 border border-gray-700 rounded-2xl rounded-bl-sm px-4 py-3">
         <div className="flex gap-1.5 items-center h-4">
           <div className="w-2 h-2 bg-[#00A8E0] rounded-full typing-dot" />
           <div className="w-2 h-2 bg-[#00A8E0] rounded-full typing-dot" />
@@ -44,12 +44,12 @@ function Message({ msg }) {
           ? 'bg-gradient-to-br from-[#003DA5] to-[#00A8E0]'
           : 'bg-gradient-to-br from-gray-600 to-gray-700'
       }`}>
-        {isBot ? <Bot size={15} className="text-gray-900" /> : <User size={15} className="text-gray-900" />}
+        {isBot ? <Bot size={15} className="text-white" /> : <User size={15} className="text-white" />}
       </div>
       <div className={`max-w-[78%] px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm ${
         isBot
-          ? 'bg-gray-50 border border-gray-200 text-gray-900 rounded-bl-sm'
-          : 'bg-gradient-to-br from-[#003DA5] to-[#0051CC] text-gray-900 rounded-br-sm'
+          ? 'bg-gray-800 border border-gray-700 text-white rounded-bl-sm'
+          : 'bg-gradient-to-br from-[#003DA5] to-[#0051CC] text-white rounded-br-sm'
       }`}>
         <p className="whitespace-pre-wrap">{msg.content}</p>
         {msg.timestamp && (
@@ -160,16 +160,16 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
   const ChatContent = () => (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800 bg-white rounded-t-2xl flex-shrink-0">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800 bg-gray-900 rounded-t-2xl flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-gradient-to-br from-[#003DA5] to-[#00A8E0] rounded-xl flex items-center justify-center shadow relative">
-            <Bot size={18} className="text-gray-900" />
+            <Bot size={18} className="text-white" />
             {status === 'online' && (
               <div className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-gray-900" />
             )}
           </div>
           <div>
-            <div className="flex items-center gap-1.5 font-semibold text-gray-900 text-sm">
+            <div className="flex items-center gap-1.5 font-semibold text-white text-sm">
               StadiumAI Chatbot
               <span className="badge bg-[#FFD700]/20 text-[#FFD700] text-[10px]">
                 <Sparkles size={9} /> Julep AI
@@ -183,21 +183,21 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
           <select
             value={language}
             onChange={e => setLanguage(e.target.value)}
-            className="text-xs bg-gray-50 border border-gray-200 text-gray-700 rounded-lg px-2 py-1 focus:outline-none focus:border-[#003DA5]"
+            className="text-xs bg-gray-800 border border-gray-700 text-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:border-[#003DA5]"
           >
             {LANGUAGES.map(l => <option key={l}>{l}</option>)}
           </select>
           <button
             onClick={resetChat}
             title="New conversation"
-            className="p-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all"
+            className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all"
           >
             <RefreshCw size={14} />
           </button>
           {floating && (
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all"
+              className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all"
             >
               <ChevronDown size={14} />
             </button>
@@ -230,7 +230,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
               <button
                 key={p.label}
                 onClick={() => sendMessage(p.text)}
-                className="flex items-center gap-1.5 text-left text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-2.5 py-2 rounded-xl transition-all truncate"
+                className="flex items-center gap-1.5 text-left text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 px-2.5 py-2 rounded-xl transition-all truncate"
               >
                 <span>{p.icon}</span>
                 <span className="truncate">{p.label}</span>
@@ -242,10 +242,10 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
 
       {/* Input */}
       <div className="px-4 pb-4 flex-shrink-0">
-        <div className="flex gap-2 bg-gray-50 border border-gray-200 rounded-xl p-1 focus-within:border-[#003DA5] transition-all">
+        <div className="flex gap-2 bg-gray-800 border border-gray-700 rounded-xl p-1 focus-within:border-[#003DA5] transition-all">
           <input
             ref={inputRef}
-            className="flex-1 bg-transparent text-gray-900 text-sm placeholder-gray-500 px-3 py-2 focus:outline-none"
+            className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 px-3 py-2 focus:outline-none"
             placeholder="Ask me anything..."
             value={input}
             onChange={e => setInput(e.target.value)}
@@ -258,7 +258,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
             disabled={!input.trim() || loading}
             className="w-9 h-9 rounded-lg bg-[#003DA5] hover:bg-[#0051CC] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0"
           >
-            <Send size={15} className="text-gray-900" />
+            <Send size={15} className="text-white" />
           </button>
         </div>
         <div className="text-center text-[10px] text-gray-600 mt-1.5">
@@ -274,7 +274,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
       <>
         {/* Chat panel */}
         {isOpen && (
-          <div className="fixed bottom-20 right-4 w-[380px] h-[580px] bg-white border border-gray-200 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden fade-in-up">
+          <div className="fixed bottom-20 right-4 w-[380px] h-[580px] bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden fade-in-up">
             <ChatContent />
           </div>
         )}
@@ -286,8 +286,8 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
           title="Chat with StadiumAI"
         >
           {isOpen
-            ? <X size={22} className="text-gray-900" />
-            : <Bot size={24} className="text-gray-900" />
+            ? <X size={22} className="text-white" />
+            : <Bot size={24} className="text-white" />
           }
           {status === 'online' && !isOpen && (
             <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white flex items-center justify-center">

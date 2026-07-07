@@ -19,9 +19,9 @@ function TypingIndicator() {
   return (
     <div className="flex items-end gap-2">
       <div className="w-8 h-8 rounded-full bg-[#003DA5] flex items-center justify-center flex-shrink-0">
-        <Bot size={16} className="text-gray-900" />
+        <Bot size={16} className="text-white" />
       </div>
-      <div className="bg-gray-50 rounded-2xl rounded-bl-sm px-4 py-3">
+      <div className="bg-gray-800 rounded-2xl rounded-bl-sm px-4 py-3">
         <div className="flex gap-1.5 items-center h-4">
           <div className="w-2 h-2 bg-gray-400 rounded-full typing-dot" />
           <div className="w-2 h-2 bg-gray-400 rounded-full typing-dot" />
@@ -88,11 +88,11 @@ export default function FanAssistant({ stadiumId }) {
       <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-800">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#003DA5] rounded-xl flex items-center justify-center relative">
-            <Bot size={20} className="text-gray-900" />
+            <Bot size={20} className="text-white" />
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900" />
           </div>
           <div>
-            <div className="font-semibold text-gray-900">StadiumAI Fan Assistant</div>
+            <div className="font-semibold text-white">StadiumAI Fan Assistant</div>
             <div className="text-xs text-green-400">● Online · GenAI Powered</div>
           </div>
         </div>
@@ -104,7 +104,7 @@ export default function FanAssistant({ stadiumId }) {
           >
             {LANGUAGES.map(l => <option key={l}>{l}</option>)}
           </select>
-          <button onClick={reset} className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-all">
+          <button onClick={reset} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all">
             <RefreshCw size={16} />
           </button>
         </div>
@@ -115,14 +115,14 @@ export default function FanAssistant({ stadiumId }) {
         {messages.map((msg, i) => (
           <div key={i} className={`flex items-end gap-2 fade-in-up ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-              msg.role === 'assistant' ? 'bg-[#003DA5]' : 'bg-gray-100'
+              msg.role === 'assistant' ? 'bg-[#003DA5]' : 'bg-gray-700'
             }`}>
-              {msg.role === 'assistant' ? <Bot size={16} className="text-gray-900" /> : <User size={16} className="text-gray-900" />}
+              {msg.role === 'assistant' ? <Bot size={16} className="text-white" /> : <User size={16} className="text-white" />}
             </div>
             <div className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
               msg.role === 'assistant'
-                ? 'bg-gray-50 text-gray-900 rounded-bl-sm'
-                : 'bg-[#003DA5] text-gray-900 rounded-br-sm'
+                ? 'bg-gray-800 text-white rounded-bl-sm'
+                : 'bg-[#003DA5] text-white rounded-br-sm'
             }`}>
               {msg.content}
             </div>
@@ -139,7 +139,7 @@ export default function FanAssistant({ stadiumId }) {
             <button
               key={p}
               onClick={() => sendMessage(p)}
-              className="text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full transition-all"
+              className="text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 px-3 py-1.5 rounded-full transition-all"
             >
               {p}
             </button>

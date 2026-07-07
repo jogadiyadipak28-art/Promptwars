@@ -20,7 +20,7 @@ function OccupancyBar({ pct }) {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+    <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
       <div
         className={`h-full rounded-full transition-all duration-1000 ease-out ${
           pct >= 90 ? 'bg-brand-red' : pct >= 80 ? 'bg-brand-pink' : 'bg-brand-green'
@@ -35,8 +35,8 @@ function FlagBadge({ country }) {
   const src = FLAGS[country];
   if (!src) {
     return (
-      <div className="absolute top-2 left-2 w-7 h-5 rounded bg-gray-200 border border-white/20 flex items-center justify-center">
-        <Trophy size={12} className="text-gray-900" />
+      <div className="absolute top-2 left-2 w-7 h-5 rounded bg-white/10 border border-white/20 flex items-center justify-center">
+        <Trophy size={12} className="text-white" />
       </div>
     );
   }
@@ -61,7 +61,7 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
               <Trophy size={16} className="text-brand-green" />
               <span className="text-brand-blue text-sm font-semibold uppercase tracking-wider">2026 Venues</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-gray-900">Select Your Stadium</h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-white">Select Your Stadium</h2>
           </div>
           <div className="hidden sm:flex items-center gap-2 text-brand-blue/60 text-sm">
             <div className="w-2 h-2 rounded-full bg-brand-green animate-pulse" />
@@ -105,7 +105,7 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
                 </div>
 
                 <div className={`p-3 transition-colors duration-300 ${isSelected ? 'bg-brand-green/10' : 'bg-brand-dark/80'}`}>
-                  <div className="font-bold text-gray-900 text-sm leading-tight mb-0.5 line-clamp-1">{s.name}</div>
+                  <div className="font-bold text-white text-sm leading-tight mb-0.5 line-clamp-1">{s.name}</div>
                   <div className="flex items-center gap-1 text-brand-blue/60 text-xs mb-2">
                     <MapPin size={9} />
                     <span className="truncate">{s.city}</span>
@@ -133,9 +133,9 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
             </div>
             {MATCHES.map((m, i) => (
               <div key={i} className="flex items-center gap-3 flex-shrink-0 bg-brand-green/5 rounded-xl px-4 py-2 border border-brand-green/15 hover:border-brand-green/30 transition-colors cursor-default">
-                <span className="text-gray-900 font-bold text-sm">{m.home}</span>
+                <span className="text-white font-bold text-sm">{m.home}</span>
                 <span className="text-brand-red text-xs font-black">VS</span>
-                <span className="text-gray-900 font-bold text-sm">{m.away}</span>
+                <span className="text-white font-bold text-sm">{m.away}</span>
                 <span className="w-px h-4 bg-brand-blue/20" />
                 <span className="text-brand-blue/60 text-xs">{m.date} · {m.time}</span>
                 <ChevronRight size={12} className="text-brand-green/50" />

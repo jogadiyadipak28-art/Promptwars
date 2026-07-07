@@ -10,70 +10,72 @@
     --brand-green-deep: #34D399;
     --brand-pink: #F472B6;
     --brand-red: #F87171;
-    --brand-bg: #F8FAFC;
-    --brand-bg-deep: #FFFFFF;
+    --brand-bg: #0C1B2E;
+    --brand-bg-deep: #081420;
   }
   body {
-    background-color: var(--brand-bg);
-    color: #1F2937;
+    background-color: var(--brand-bg-deep);
+    color: #fff;
     font-family: Inter, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image:
-      radial-gradient(ellipse at 15% 40%, rgba(125,211,252,0.15) 0%, transparent 55%),
-      radial-gradient(ellipse at 85% 15%, rgba(74,222,128,0.12) 0%, transparent 50%),
-      radial-gradient(ellipse at 70% 80%, rgba(244,114,182,0.08) 0%, transparent 45%);
+      radial-gradient(ellipse at 15% 40%, rgba(125,211,252,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 15%, rgba(74,222,128,0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(244,114,182,0.06) 0%, transparent 45%);
   }
   ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track { background: #F1F5F9; }
-  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 999px; }
-  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  ::-webkit-scrollbar-track { background: #081420; }
+  ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #38BDF8; }
 }
 
 @layer components {
   .card {
-    @apply bg-white border border-gray-200 rounded-2xl p-6 shadow-md;
+    @apply bg-gray-900/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-xl;
   }
   .card-glass {
-    @apply bg-white/80 backdrop-blur-md border border-gray-200 rounded-2xl shadow-lg;
+    @apply bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl;
   }
   .btn-primary {
     @apply font-semibold px-5 py-2.5 rounded-xl transition-all duration-200
            disabled:opacity-40 disabled:cursor-not-allowed active:scale-95;
     background: linear-gradient(to right, var(--brand-blue-deep), var(--brand-green-deep));
-    color: #FFFFFF;
-    box-shadow: 0 10px 15px -3px rgba(74, 222, 128, 0.25);
+    color: var(--brand-bg-deep);
+    box-shadow: 0 10px 15px -3px rgba(74, 222, 128, 0.2);
   }
   .btn-primary:hover:not(:disabled) {
     background: linear-gradient(to right, var(--brand-blue), var(--brand-green));
   }
   .btn-white {
-    @apply font-bold px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95 bg-white border border-gray-200;
+    @apply font-bold px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
+    background: linear-gradient(to right, var(--brand-blue), var(--brand-green));
     color: var(--brand-bg-deep);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 15px -3px rgba(125, 211, 252, 0.25);
   }
   .btn-white:hover {
-    @apply bg-gray-50 border-gray-300;
+    background: linear-gradient(to right, var(--brand-blue-deep), var(--brand-green));
   }
   .btn-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-800 font-medium
+    @apply bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium
            px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
   }
   .input {
-    @apply w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900
-           placeholder-gray-400 focus:outline-none focus:bg-white transition-all shadow-sm;
+    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white
+           placeholder-gray-500 focus:outline-none focus:bg-white/10 transition-all;
+    border-color: rgba(255,255,255,0.1);
   }
   .input:focus {
-    border-color: rgba(56, 189, 248, 0.8);
-    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    border-color: rgba(125,211,252,0.8);
+    box-shadow: 0 0 0 1px rgba(74,222,128,0.4);
   }
   .select {
-    @apply w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-gray-900
-           focus:outline-none transition-all cursor-pointer shadow-sm;
+    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white
+           focus:outline-none transition-all cursor-pointer;
   }
   .select:focus {
-    border-color: rgba(56, 189, 248, 0.8);
-    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    border-color: rgba(125,211,252,0.8);
+    box-shadow: 0 0 0 1px rgba(74,222,128,0.4);
   }
   .badge {
     @apply inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full;
@@ -83,27 +85,27 @@
            transition-all duration-200 whitespace-nowrap;
   }
   .tab-btn.active {
-    @apply font-bold shadow-md active:scale-95;
+    @apply font-bold shadow-lg active:scale-95;
     background: linear-gradient(to right, var(--brand-blue-deep), var(--brand-green-deep));
-    color: #FFFFFF;
+    color: var(--brand-bg-deep);
     box-shadow: 0 10px 15px -3px rgba(74, 222, 128, 0.25);
   }
   .tab-btn:not(.active) {
-    @apply text-gray-500 hover:text-gray-900 hover:bg-gray-100;
+    @apply text-gray-400 hover:text-white hover:bg-white/5;
   }
   .section-title {
-    @apply text-2xl font-bold text-gray-900 mb-1;
+    @apply text-2xl font-bold text-white mb-1;
   }
   .section-sub {
-    @apply text-gray-500 text-sm mb-6;
+    @apply text-gray-400 text-sm mb-6;
   }
   .stat-card {
-    @apply card-glass p-5 rounded-2xl flex flex-col gap-2 hover:border-blue-300 transition-all duration-300;
+    @apply card-glass p-5 rounded-2xl flex flex-col gap-2 hover:border-white/20 transition-all duration-300;
   }
   .feature-card {
-    @apply relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br bg-white
-           transition-all duration-300 hover:scale-[1.02] hover:border-blue-300 cursor-pointer
-           shadow-sm hover:shadow-md;
+    @apply relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br
+           transition-all duration-300 hover:scale-[1.02] hover:border-white/20 cursor-pointer
+           shadow-xl;
   }
 }
 

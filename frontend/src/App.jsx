@@ -109,7 +109,7 @@ export default function App() {
           {/* Tab nav */}
           <div className="relative">
             {/* Background blur panel */}
-            <div className="bg-white/[0.02] backdrop-blur-sm border border-gray-100 rounded-2xl p-2 shadow-2xl">
+            <div className="bg-white/[0.02] backdrop-blur-sm border border-white/5 rounded-2xl p-2 shadow-2xl">
               <div className="flex gap-1.5 overflow-x-auto scrollbar-hide pb-0.5">
                 {visibleTabs.map(tab => {
                   const Icon = tab.icon;
@@ -145,11 +145,11 @@ export default function App() {
           {activeTabData && (
             <div className="flex items-center gap-2 -mt-4">
               <div className="w-1 h-5 rounded-full" style={{ background: activeTabData.color }} />
-              <span className="text-gray-900 font-bold text-lg">{activeTabData.label}</span>
+              <span className="text-white font-bold text-lg">{activeTabData.label}</span>
               {selectedStadium && (
                 <>
                   <ChevronRight size={14} className="text-gray-600" />
-                  <span className="text-gray-600 text-sm">{selectedStadium.name}</span>
+                  <span className="text-gray-400 text-sm">{selectedStadium.name}</span>
                 </>
               )}
             </div>
@@ -189,7 +189,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="relative mt-16 border-t border-gray-200 overflow-hidden">
+    <footer className="relative mt-16 border-t border-white/10 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <SafeImage
           src={IMAGES.stadium}
@@ -216,7 +216,7 @@ function Footer() {
                 <img src={FOOTBALL_ICON} alt="" className="w-6 h-6" aria-hidden="true" />
               </div>
               <div>
-                <div className="font-black text-gray-900 text-lg">StadiumAI</div>
+                <div className="font-black text-white text-lg">StadiumAI</div>
                 <div className="text-gray-500 text-xs">FIFA World Cup 2026</div>
               </div>
             </div>
@@ -227,7 +227,7 @@ function Footer() {
 
           {/* Venues */}
           <div>
-            <h4 className="text-gray-900 font-bold text-sm mb-4 uppercase tracking-wider">Host Nations</h4>
+            <h4 className="text-white font-bold text-sm mb-4 uppercase tracking-wider">Host Nations</h4>
             <div className="space-y-2 text-blue-200/60 text-sm">
               {nations.map(n => (
                 <div key={n.label} className="flex items-center gap-2">
@@ -242,7 +242,7 @@ function Footer() {
 
           {/* AI stack */}
           <div>
-            <h4 className="text-gray-900 font-bold text-sm mb-4 uppercase tracking-wider">Powered By</h4>
+            <h4 className="text-white font-bold text-sm mb-4 uppercase tracking-wider">Powered By</h4>
             <div className="space-y-2">
               {[
                 { name: 'Julep AI', desc: 'Conversational memory', color: theme.blue },
@@ -252,7 +252,7 @@ function Footer() {
               ].map(t => (
                 <div key={t.name} className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full" style={{ background: t.color }} />
-                  <span className="text-gray-700 text-sm font-medium">{t.name}</span>
+                  <span className="text-gray-300 text-sm font-medium">{t.name}</span>
                   <span className="text-gray-600 text-xs">· {t.desc}</span>
                 </div>
               ))}
@@ -261,7 +261,7 @@ function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-gray-100 gap-3">
+        <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-white/5 gap-3">
           <p className="text-gray-600 text-xs">
             © 2026 StadiumAI · Built for FIFA World Cup 2026 · Generative AI Platform
           </p>
