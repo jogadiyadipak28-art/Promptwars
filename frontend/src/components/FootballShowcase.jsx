@@ -128,7 +128,7 @@ export default function FootballShowcase() {
           className={`text-center mb-20 transition-all duration-700 ${titleInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
         >
           <div className="inline-flex items-center gap-2 bg-brand-green/10 border border-brand-green/25 rounded-full px-4 py-1.5 mb-4">
-            <img src={FOOTBALL_ICON} alt="" className="w-5 h-5" aria-hidden="true" />
+            <img src={FOOTBALL_ICON} alt="" width="20" height="20" className="w-5 h-5" aria-hidden="true" />
             <span className="text-brand-green text-sm font-semibold">The Beautiful Game Meets AI</span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">

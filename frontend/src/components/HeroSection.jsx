@@ -146,7 +146,7 @@ export default function HeroSection({ onScrollToApp }) {
       </div>
 
       <div className="absolute top-1/4 right-[15%] z-[2] hidden md:block ball-bounce pointer-events-none">
-        <img src={FOOTBALL_ICON} alt="" aria-hidden="true" className="w-14 h-14 drop-shadow-2xl" />
+        <img src={FOOTBALL_ICON} alt="" width="56" height="56" aria-hidden="true" className="w-14 h-14 drop-shadow-2xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-16 w-full">
@@ -175,7 +175,7 @@ export default function HeroSection({ onScrollToApp }) {
               onClick={onScrollToApp}
               className="btn-white flex items-center gap-2 text-base px-7 py-3.5 rounded-2xl hover:scale-105 transition-transform duration-200"
             >
-              <img src={FOOTBALL_ICON} alt="" className="w-5 h-5" aria-hidden="true" />
+              <img src={FOOTBALL_ICON} alt="" width="20" height="20" className="w-5 h-5" aria-hidden="true" />
               Launch StadiumAI
             </button>
             <button

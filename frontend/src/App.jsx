@@ -117,6 +117,7 @@ export default function App() {
                   return (
                     <button
                       key={tab.id}
+                      aria-label={tab.label}
                       onClick={() => handleTabChange(tab.id)}
                       className={`tab-btn flex-shrink-0 relative ${isActive ? 'active' : ''}`}
                       style={isActive ? { background: `linear-gradient(135deg, ${tab.color}30, ${tab.color}15)`, borderColor: `${tab.color}40`, border: `1px solid ${tab.color}40` } : {}}
@@ -213,7 +214,7 @@ function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-xl flex items-center justify-center border border-brand-blue/30">
-                <img src={FOOTBALL_ICON} alt="" className="w-6 h-6" aria-hidden="true" />
+                <img src={FOOTBALL_ICON} alt="" width="24" height="24" className="w-6 h-6" aria-hidden="true" />
               </div>
               <div>
                 <div className="font-black text-white text-lg">StadiumAI</div>
