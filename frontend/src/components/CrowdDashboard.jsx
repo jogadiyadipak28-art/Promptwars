@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Users, AlertTriangle, CheckCircle, RefreshCw, Brain } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Users, AlertTriangle, RefreshCw, Brain } from 'lucide-react';
 import { getCrowdData, crowdAnalysis } from '../api/client';
 
 const MOCK_CROWD = [
@@ -33,7 +33,7 @@ export default function CrowdDashboard({ stadiumId }) {
     if (stadiumId) setSelected(stadiumId);
   }, [stadiumId]);
 
-  const runAnalysis = async (id) => {
+  const runAnalysis = useCallback(async (id) => {
     setLoadingAnalysis(true);
     setAiAnalysis('');
     try {
@@ -44,7 +44,7 @@ export default function CrowdDashboard({ stadiumId }) {
     } finally {
       setLoadingAnalysis(false);
     }
-  };
+  }, []);
 
   const selectedData = crowdData.find(c => c.id === selected);
 

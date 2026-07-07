@@ -41,7 +41,9 @@ export default function TranslationTool() {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(translated);
+    navigator.clipboard.writeText(translated).catch(() => {
+      // Clipboard API may be unavailable in some contexts — fail silently
+    });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -59,9 +61,9 @@ export default function TranslationTool() {
         <div className="mb-5">
           <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Sample Stadium Announcements</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {SAMPLE_ANNOUNCEMENTS.slice(0, 4).map((s, i) => (
+            {SAMPLE_ANNOUNCEMENTS.slice(0, 4).map((s) => (
               <button
-                key={i}
+                key={s.slice(0, 30)}
                 onClick={() => setText(s)}
                 className="text-left text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 px-3 py-2 rounded-xl transition-all line-clamp-2"
               >

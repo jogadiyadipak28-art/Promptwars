@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Map, Navigation, Accessibility, ArrowRight, Loader } from 'lucide-react';
 import { navigate } from '../api/client';
 
@@ -21,7 +21,7 @@ export default function NavigationTool({ stadiumId, stadium }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleNavigate = async () => {
+  const handleNavigate = useCallback(async () => {
     if (!from.trim() || !to.trim()) { setError('Please enter both origin and destination.'); return; }
     if (!stadiumId) { setError('Please select a stadium first.'); return; }
     setError('');
@@ -35,12 +35,12 @@ export default function NavigationTool({ stadiumId, stadium }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [from, to, stadiumId, accessibility, language]);
 
-  const applyQuickRoute = (route) => {
+  const applyQuickRoute = useCallback((route) => {
     setFrom(route.from);
     setTo(route.to);
-  };
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -91,13 +91,23 @@ export default function NavigationTool({ stadiumId, stadium }) {
             </select>
           </div>
           <label htmlFor="nav-acc" className="flex items-center gap-2 cursor-pointer mt-4">
-            <div className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-700'} relative`}>
+            <div
+              className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-700'} relative`}
+              aria-hidden="true"
+            >
               <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${accessibility ? 'left-5' : 'left-1'}`} />
             </div>
             <span className="text-sm text-gray-300 flex items-center gap-1.5">
-              <Accessibility size={14} className="text-[#00A8E0]" /> Accessibility Route
+              <Accessibility size={14} className="text-[#00A8E0]" aria-hidden="true" /> Accessibility Route
             </span>
-            <input id="nav-acc" type="checkbox" className="hidden" checked={accessibility} onChange={e => setAccessibility(e.target.checked)} />
+            <input
+              id="nav-acc"
+              type="checkbox"
+              className="sr-only"
+              checked={accessibility}
+              onChange={e => setAccessibility(e.target.checked)}
+              aria-label="Enable accessibility route"
+            />
           </label>
         </div>
 

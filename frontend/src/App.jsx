@@ -19,12 +19,12 @@ import SustainabilityPanel from './components/SustainabilityPanel';
 import AlertGenerator    from './components/AlertGenerator';
 import VolunteerBriefing from './components/VolunteerBriefing';
 import JulepChatbot      from './components/JulepChatbot';
+import ErrorBoundary from './components/ErrorBoundary';
 import SafeImage         from './components/SafeImage';
 import { getStadiums }   from './api/client';
 import { IMAGES, FLAGS, FOOTBALL_ICON } from './assets/images';
-import { TAB_COLORS, theme } from './assets/theme';
 
-/* ─── Tab definitions ─────────────────────────────────────────────────── */
+import { TAB_COLORS, theme } from './assets/theme';
 const TABS = [
   { id: 'chatbot',        label: 'AI Chatbot',    icon: Bot,           role: 'fan',  color: TAB_COLORS.chatbot },
   { id: 'assistant',      label: 'Fan Assistant', icon: MessageCircle, role: 'fan',  color: TAB_COLORS.assistant },
@@ -66,7 +66,9 @@ export default function App() {
   const handleTabChange = (tabId) => {
     if (tabId === activeTab) return;
     setTabChanging(true);
-    setTimeout(() => { setActiveTab(tabId); setTabChanging(false); }, 150);
+    // Store timeout id so React StrictMode double-invoke doesn't leak
+    const t = setTimeout(() => { setActiveTab(tabId); setTabChanging(false); }, 150);
+    return () => clearTimeout(t);
   };
 
   const handleFeatureSelect = (tabId) => {
@@ -167,15 +169,17 @@ export default function App() {
             role="tabpanel"
             className={`transition-all duration-150 ${tabChanging ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}
           >
-            {activeTab === 'chatbot'        && <JulepChatbot        stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
-            {activeTab === 'assistant'      && <FanAssistant        stadiumId={selectedStadium?.id} />}
-            {activeTab === 'navigation'     && <NavigationTool      stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
-            {activeTab === 'crowd'          && <CrowdDashboard      stadiumId={selectedStadium?.id} />}
-            {activeTab === 'translate'      && <TranslationTool />}
-            {activeTab === 'transport'      && <TransportAdvisor    stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
-            {activeTab === 'sustainability' && <SustainabilityPanel stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
-            {activeTab === 'alerts'         && <AlertGenerator      stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
-            {activeTab === 'volunteer'      && <VolunteerBriefing   stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
+            <ErrorBoundary>
+              {activeTab === 'chatbot'        && <JulepChatbot        stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
+              {activeTab === 'assistant'      && <FanAssistant        stadiumId={selectedStadium?.id} />}
+              {activeTab === 'navigation'     && <NavigationTool      stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
+              {activeTab === 'crowd'          && <CrowdDashboard      stadiumId={selectedStadium?.id} />}
+              {activeTab === 'translate'      && <TranslationTool />}
+              {activeTab === 'transport'      && <TransportAdvisor    stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
+              {activeTab === 'sustainability' && <SustainabilityPanel stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
+              {activeTab === 'alerts'         && <AlertGenerator      stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
+              {activeTab === 'volunteer'      && <VolunteerBriefing   stadiumId={selectedStadium?.id} stadium={selectedStadium} />}
+            </ErrorBoundary>
           </div>
         </div>
       </div>

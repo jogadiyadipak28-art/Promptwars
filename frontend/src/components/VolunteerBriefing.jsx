@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Clipboard, User, Clock, Loader, Download } from 'lucide-react';
 import { volunteerBrief } from '../api/client';
 
@@ -23,7 +23,7 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleGenerate = async () => {
+  const handleGenerate = useCallback(async () => {
     if (!role) { setError('Please select a volunteer role.'); return; }
     if (!stadiumId) { setError('Please select a stadium.'); return; }
     setError('');
@@ -37,16 +37,19 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [role, stadiumId, shiftTime, language]);
 
-  const downloadBrief = () => {
-    const blob = new Blob([`FIFA World Cup 2026\nRole: ${role}\nShift: ${shiftTime}\nStadium: ${stadium?.name}\n\n${brief}`], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
+  const downloadBrief = useCallback(() => {
+    const content = `FIFA World Cup 2026\nRole: ${role}\nShift: ${shiftTime}\nStadium: ${stadium?.name}\n\n${brief}`;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
     a.download = `brief-${role.replace(/\s+/g, '-').toLowerCase()}.txt`;
     a.click();
-  };
+    // Revoke object URL to free memory
+    URL.revokeObjectURL(url);
+  }, [role, shiftTime, stadium, brief]);
 
   return (
     <div className="space-y-6">

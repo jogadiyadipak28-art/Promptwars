@@ -48,7 +48,9 @@ export default function AlertGenerator({ stadiumId, stadium }) {
   };
 
   const copy = () => {
-    navigator.clipboard.writeText(alert);
+    navigator.clipboard.writeText(alert).catch(() => {
+      // Clipboard API may be blocked — fail silently
+    });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -90,6 +92,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
               return (
                 <button
                   key={key}
+                  aria-pressed={severity === key}
                   onClick={() => setSeverity(key)}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all border ${
                     severity === key
@@ -166,7 +169,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
             {history.slice(1).map((h, i) => {
               const conf = SEVERITY_CONFIG[h.severity];
               return (
-                <div key={i} className="flex items-start gap-3 text-xs bg-gray-800 rounded-xl px-3 py-2">
+                <div key={`${h.time}-${i}`} className="flex items-start gap-3 text-xs bg-gray-800 rounded-xl px-3 py-2">
                   <span className={`mt-0.5 ${conf.color}`}>●</span>
                   <div className="flex-1 text-gray-300">{h.alert}</div>
                   <span className="text-gray-400 whitespace-nowrap">{h.time}</span>

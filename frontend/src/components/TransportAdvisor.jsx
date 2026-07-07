@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Zap, MapPin, Users, Accessibility, Loader, Train, Bus, Car } from 'lucide-react';
 import { transportRecommend } from '../api/client';
 
@@ -18,7 +18,7 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleRecommend = async () => {
+  const handleRecommend = useCallback(async () => {
     if (!origin.trim()) { setError('Please enter your origin.'); return; }
     if (!stadiumId) { setError('Please select a stadium.'); return; }
     setError('');
@@ -32,7 +32,7 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [stadiumId, origin, arrivalTime, groupSize, accessibility, language]);
 
   return (
     <div className="space-y-6">
@@ -95,13 +95,23 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
             </select>
           </div>
           <label htmlFor="trans-acc" className="flex items-center gap-2 cursor-pointer pb-1">
-            <div className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-700'} relative`}>
+            <div
+              className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-700'} relative`}
+              aria-hidden="true"
+            >
               <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${accessibility ? 'left-5' : 'left-1'}`} />
             </div>
             <span className="text-sm text-gray-300 flex items-center gap-1.5">
-              <Accessibility size={14} className="text-[#00A8E0]" /> Accessibility Needs
+              <Accessibility size={14} className="text-[#00A8E0]" aria-hidden="true" /> Accessibility Needs
             </span>
-            <input id="trans-acc" type="checkbox" className="hidden" checked={accessibility} onChange={e => setAccessibility(e.target.checked)} />
+            <input
+              id="trans-acc"
+              type="checkbox"
+              className="sr-only"
+              checked={accessibility}
+              onChange={e => setAccessibility(e.target.checked)}
+              aria-label="Enable accessibility needs"
+            />
           </label>
         </div>
 
