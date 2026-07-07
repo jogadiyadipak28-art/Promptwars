@@ -45,6 +45,9 @@ const FALLBACK_STADIUMS = [
   { id: 'bcplace', name: 'BC Place',        city: 'Vancouver',           country: 'Canada', capacity: 54500 },
 ];
 
+/* ─── Static style constants ─────────────────────────────────────────── */
+const APP_BG = { background: '#081420' };
+
 /* ─── Main App ────────────────────────────────────────────────────────── */
 export default function App() {
   const [activeTab, setActiveTab]       = useState('chatbot');
@@ -88,7 +91,7 @@ export default function App() {
   const activeTabData = TABS.find(t => t.id === activeTab);
 
   return (
-    <div className="min-h-screen" style={{ background: '#081420' }}>
+    <div className="min-h-screen" style={APP_BG}>
       {/* Skip-nav for accessibility */}
       <a href="#main-content" className="skip-link">Skip to main content</a>
 

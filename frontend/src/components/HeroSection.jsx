@@ -8,6 +8,17 @@ import SafeImage from './SafeImage';
 import { IMAGES, FOOTBALL_ICON } from '../assets/images';
 import { theme } from '../assets/theme';
 
+/* ─── Static style constants ─────────────────────────────────────────── */
+const PLAYER_MASK_STYLE = {
+  maskImage:       'linear-gradient(to left, rgba(0,0,0,0.8) 40%, transparent 100%)',
+  WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.6) 30%, transparent 100%)',
+  filter:          'brightness(0.9) contrast(1.05)',
+};
+const PLAYER_ALT_MASK_STYLE = {
+  maskImage:       'linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 100%)',
+  WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 100%)',
+};
+
 const STATS = [
   { value: '48',  label: 'Matches', icon: Calendar,  color: theme.blue  },
   { value: '16',  label: 'Venues',  icon: Building2, color: theme.green },
@@ -147,11 +158,7 @@ export default function HeroSection({ onScrollToApp }) {
             className={`w-full h-full object-cover object-top transition-all duration-1000 ${
               loaded ? 'opacity-80 scale-100' : 'opacity-0 scale-95'
             }`}
-            style={{
-              maskImage:       'linear-gradient(to left, rgba(0,0,0,0.8) 40%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.6) 30%, transparent 100%)',
-              filter:          'brightness(0.9) contrast(1.05)',
-            }}
+            style={PLAYER_MASK_STYLE}
           />
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-brand-green/25 blur-3xl rounded-full" />
         </div>
@@ -164,10 +171,7 @@ export default function HeroSection({ onScrollToApp }) {
           alt=""
           aria-hidden="true"
           className="w-48 h-64 object-cover object-top"
-          style={{
-            maskImage:       'linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 100%)',
-          }}
+          style={PLAYER_ALT_MASK_STYLE}
         />
       </div>
 

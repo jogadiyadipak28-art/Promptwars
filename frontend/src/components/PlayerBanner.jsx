@@ -5,18 +5,23 @@ import { BANNER_IMAGES } from '../assets/images';
 const ALL = [...BANNER_IMAGES, ...BANNER_IMAGES];
 
 /** Scrolling image banner — decorative, no interactive props */
+const BANNER_BG_STYLE = {
+  background: 'linear-gradient(to bottom, transparent, rgba(125,211,252,0.06), rgba(74,222,128,0.06))',
+};
+const BANNER_SCROLL_STYLE = { width: 'max-content' };
+
 export default function PlayerBanner() {
   return (
     <div
       className="relative py-8 overflow-hidden"
-      style={{ background: 'linear-gradient(to bottom, transparent, rgba(125,211,252,0.06), rgba(74,222,128,0.06))' }}
+      style={BANNER_BG_STYLE}
       aria-hidden="true"
       role="presentation"
     >
       <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-brand-darker to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-darker to-transparent z-10 pointer-events-none" />
 
-      <div className="flex gap-4 scroll-banner" style={{ width: 'max-content' }}>
+      <div className="flex gap-4 scroll-banner" style={BANNER_SCROLL_STYLE}>
         {ALL.map((img, i) => (
           <div
             key={`${img.src}-${i}`}
