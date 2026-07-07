@@ -14,6 +14,11 @@
  */
 
 const { STADIUMS, CROWD_DATA, getStadium } = require('../data/stadiums');
+const {
+  SESSION_TTL_MS,
+  SESSION_PRUNE_INTERVAL_MS,
+  MAX_SESSION_HISTORY,
+} = require('../constants');
 
 // ── Optional: OpenAI upgrade path ─────────────────────────────────────────
 let openai = null;
@@ -26,7 +31,6 @@ if (process.env.OPENAI_API_KEY) {
 }
 
 // ── In-memory session store with TTL expiry ─────────────────────────────
-const SESSION_TTL_MS = 30 * 60 * 1000; // 30 minutes
 const sessions = new Map(); // sessionId -> { history, stadiumId, lastUsed }
 
 function getSession(sessionId) {
@@ -43,13 +47,13 @@ function deleteSession(sessionId) {
   sessions.delete(sessionId);
 }
 
-// Purge sessions older than SESSION_TTL_MS — runs every 10 minutes
+// Purge sessions older than SESSION_TTL_MS — runs every SESSION_PRUNE_INTERVAL_MS
 const _pruneInterval = setInterval(() => {
   const cutoff = Date.now() - SESSION_TTL_MS;
   for (const [id, session] of sessions) {
     if (session.lastUsed < cutoff) sessions.delete(id);
   }
-}, 10 * 60 * 1000);
+}, SESSION_PRUNE_INTERVAL_MS);
 // Allow process to exit cleanly (unref so it doesn't block shutdown)
 if (_pruneInterval.unref) _pruneInterval.unref();
 
@@ -255,9 +259,9 @@ async function chat(clientSessionId, userMessage, contextHint = '') {
 
   session.history.push({ role: 'assistant', content: reply });
 
-  // Prune history to last 20 messages to save memory
-  if (session.history.length > 20) {
-    session.history = session.history.slice(-20);
+  // Prune history to last MAX_SESSION_HISTORY messages to save memory
+  if (session.history.length > MAX_SESSION_HISTORY) {
+    session.history = session.history.slice(-MAX_SESSION_HISTORY);
   }
 
   return reply;
