@@ -53,7 +53,7 @@ function Message({ msg }) {
       }`}>
         <p className="whitespace-pre-wrap">{msg.content}</p>
         {msg.timestamp && (
-          <div className={`text-xs mt-1.5 ${isBot ? 'text-gray-500' : 'text-blue-200/60'}`}>
+          <div className={`text-xs mt-1.5 ${isBot ? 'text-gray-400' : 'text-blue-200/60'}`}>
             {msg.timestamp}
           </div>
         )}
@@ -227,7 +227,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
       {/* Quick Prompts */}
       {showQuickPrompts && messages.length <= 1 && (
         <div className="px-4 pb-3 flex-shrink-0">
-          <div className="text-[11px] text-gray-500 mb-2 uppercase tracking-wider">Suggested questions</div>
+          <div className="text-[11px] text-gray-400 mb-2 uppercase tracking-wider">Suggested questions</div>
           <div className="grid grid-cols-2 gap-1.5">
             {QUICK_PROMPTS.map(p => (
               <button
@@ -249,7 +249,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
           <input
             aria-label="Message"
             ref={inputRef}
-            className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 px-3 py-2 focus:outline-none"
+            className="flex-1 bg-transparent text-white text-sm placeholder-gray-400 px-3 py-2 focus:outline-none"
             placeholder="Ask me anything..."
             value={input}
             onChange={e => setInput(e.target.value)}

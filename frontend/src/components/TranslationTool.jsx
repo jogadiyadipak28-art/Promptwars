@@ -57,7 +57,7 @@ export default function TranslationTool() {
 
         {/* Sample Announcements */}
         <div className="mb-5">
-          <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Sample Stadium Announcements</div>
+          <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Sample Stadium Announcements</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {SAMPLE_ANNOUNCEMENTS.slice(0, 4).map((s, i) => (
               <button
@@ -76,7 +76,7 @@ export default function TranslationTool() {
           <div className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-400">
             🇺🇸 English (Source)
           </div>
-          <ArrowRight size={20} className="text-gray-500 flex-shrink-0" />
+          <ArrowRight size={20} className="text-gray-400 flex-shrink-0" />
           <select
             aria-label="Target language"
             className="select flex-1"
@@ -127,7 +127,7 @@ export default function TranslationTool() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-gray-800/50 rounded-xl p-4">
-              <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">Original (English)</div>
+              <div className="text-xs text-gray-400 mb-2 uppercase tracking-wider">Original (English)</div>
               <p className="text-gray-300 text-sm leading-relaxed">{text}</p>
             </div>
             <div className="bg-[#003DA5]/10 border border-[#003DA5]/30 rounded-xl p-4">

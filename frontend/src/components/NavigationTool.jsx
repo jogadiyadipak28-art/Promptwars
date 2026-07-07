@@ -57,7 +57,7 @@ export default function NavigationTool({ stadiumId, stadium }) {
 
         {/* Quick Routes */}
         <div className="mb-5">
-          <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Quick Routes</div>
+          <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Quick Routes</div>
           <div className="flex flex-wrap gap-2">
             {QUICK_ROUTES.map(r => (
               <button
@@ -124,7 +124,7 @@ export default function NavigationTool({ stadiumId, stadium }) {
           <div className="bg-gray-800/50 rounded-xl p-4">
             <p className="text-gray-200 text-sm leading-relaxed whitespace-pre-wrap">{result}</p>
           </div>
-          <div className="mt-3 text-xs text-gray-500 flex items-center gap-1">
+          <div className="mt-3 text-xs text-gray-400 flex items-center gap-1">
             📍 {from} → {to} · {language}
           </div>
         </div>

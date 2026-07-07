@@ -122,7 +122,7 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
           <div className="bg-gray-800/50 rounded-xl p-4">
             <p className="text-gray-200 text-sm leading-relaxed whitespace-pre-wrap">{recommendation}</p>
           </div>
-          <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
+          <div className="mt-3 flex items-center gap-4 text-xs text-gray-400">
             <span>📍 {origin} → {stadium?.name}</span>
             <span>👥 {groupSize} {groupSize === 1 ? 'person' : 'people'}</span>
             {accessibility && <span>♿ Accessible</span>}

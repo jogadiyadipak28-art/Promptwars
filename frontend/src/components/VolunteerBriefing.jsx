@@ -91,7 +91,7 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
 
         {/* Role Cards */}
         <div className="mb-5">
-          <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Quick Select Role</div>
+          <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Quick Select Role</div>
           <div className="flex flex-wrap gap-2">
             {ROLES.slice(0, 5).map(r => (
               <button

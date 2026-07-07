@@ -67,7 +67,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
 
         {/* Preset Situations */}
         <div className="mb-5">
-          <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Preset Scenarios</div>
+          <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Preset Scenarios</div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {PRESET_SITUATIONS.map(p => (
               <button
@@ -153,7 +153,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
           <div className="bg-gray-900/50 rounded-xl p-4">
             <p className="text-white text-base leading-relaxed font-medium">{alert}</p>
           </div>
-          <div className="mt-3 text-xs text-gray-500">📍 {stadium?.name || 'Venue'} · {language} · {severity.toUpperCase()}</div>
+          <div className="mt-3 text-xs text-gray-400">📍 {stadium?.name || 'Venue'} · {language} · {severity.toUpperCase()}</div>
         </div>
       )}
 

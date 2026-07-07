@@ -71,7 +71,7 @@ export default function CrowdDashboard({ stadiumId }) {
             {/* Capacity Bar */}
             <div className="mb-3">
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-gray-500">Occupancy</span>
+                <span className="text-gray-400">Occupancy</span>
                 <span className="text-white font-medium">
                   {v.currentOccupancy?.toLocaleString()} / {v.capacity?.toLocaleString()}
                 </span>
@@ -124,7 +124,7 @@ export default function CrowdDashboard({ stadiumId }) {
 
           {/* Hotspots */}
           <div className="mb-4">
-            <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Current Hotspots</div>
+            <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Current Hotspots</div>
             <div className="flex flex-wrap gap-2">
               {(selectedData.hotspots || []).map(h => (
                 <span key={h} className="badge bg-red-900/30 text-red-400 border border-red-800/50">
@@ -136,7 +136,7 @@ export default function CrowdDashboard({ stadiumId }) {
 
           {/* All Gate Times */}
           <div className="mb-4">
-            <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Gate Wait Times</div>
+            <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Gate Wait Times</div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {Object.entries(selectedData.waitTimes || {}).map(([gate, mins]) => (
                 <div key={gate} className={`text-center p-2 rounded-lg ${
@@ -148,7 +148,7 @@ export default function CrowdDashboard({ stadiumId }) {
                   <div className={`text-lg font-bold ${
                     mins > 15 ? 'text-red-400' : mins > 8 ? 'text-yellow-400' : 'text-green-400'
                   }`}>{mins}</div>
-                  <div className="text-xs text-gray-500">min</div>
+                  <div className="text-xs text-gray-400">min</div>
                 </div>
               ))}
             </div>
@@ -165,7 +165,7 @@ export default function CrowdDashboard({ stadiumId }) {
           )}
 
           {!aiAnalysis && !loadingAnalysis && (
-            <div className="text-center text-gray-500 text-sm py-4">
+            <div className="text-center text-gray-400 text-sm py-4">
               Click "Run AI Analysis" for real-time crowd intelligence and staff recommendations
             </div>
           )}

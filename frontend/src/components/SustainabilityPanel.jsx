@@ -65,7 +65,7 @@ export default function SustainabilityPanel({ stadiumId, stadium }) {
 
         {/* Topic Shortcuts */}
         <div className="mb-5">
-          <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Explore Topics</div>
+          <div className="text-xs text-gray-400 uppercase tracking-wider mb-2">Explore Topics</div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {SUSTAINABILITY_TOPICS.map(t => (
               <button
