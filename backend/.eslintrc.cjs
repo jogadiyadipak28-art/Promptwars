@@ -13,4 +13,10 @@ module.exports = {
     'no-duplicate-imports': 'error',
     'strict': ['error', 'global'],
   },
+  overrides: [
+    {
+      files: ['src/__tests__/**/*.js'],
+      env: { jest: true },
+    },
+  ],
 };

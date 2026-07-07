@@ -30,7 +30,6 @@ function asyncHandler(fn) {
  *
  * @type {import('express').ErrorRequestHandler}
  */
-// eslint-disable-next-line no-unused-vars
 function globalError(err, req, res, _next) {
   const status = err.status || err.statusCode || 500;
   const message = status < 500 ? err.message : 'Internal server error';

@@ -2,6 +2,8 @@
  * Tests: Health check and 404 handling
  */
 
+'use strict';
+
 const request = require('supertest');
 const app     = require('../../src/server');
 

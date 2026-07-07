@@ -13,7 +13,9 @@
  * and the service automatically upgrades to GPT responses.
  */
 
-const { STADIUMS, CROWD_DATA, getStadium } = require('../data/stadiums');
+'use strict';
+
+const { CROWD_DATA, getStadium } = require('../data/stadiums');
 const {
   SESSION_TTL_MS,
   SESSION_PRUNE_INTERVAL_MS,

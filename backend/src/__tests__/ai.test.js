@@ -3,6 +3,8 @@
  * All tests pass regardless of whether OPENAI_API_KEY is set.
  */
 
+'use strict';
+
 const request = require('supertest');
 const app     = require('../../src/server');
 

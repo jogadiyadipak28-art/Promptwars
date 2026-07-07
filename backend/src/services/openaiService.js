@@ -5,6 +5,8 @@
  * functions return null so callers can fall back to rule-based responses.
  */
 
+'use strict';
+
 let openai = null;
 const apiKey = process.env.OPENAI_API_KEY;
 

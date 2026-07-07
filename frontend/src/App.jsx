@@ -244,7 +244,7 @@ function AppFooter() {
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              The world's most advanced AI platform for stadium operations and fan experience.
+              The world&apos;s most advanced AI platform for stadium operations and fan experience.
             </p>
           </div>
 

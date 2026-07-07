@@ -2,6 +2,8 @@
  * Tests: Transport routes — GET and POST /api/transport
  */
 
+'use strict';
+
 const request = require('supertest');
 const app     = require('../../src/server');
 

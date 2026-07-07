@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Users, AlertTriangle, RefreshCw, Brain } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Brain } from 'lucide-react';
 import { getCrowdData, crowdAnalysis } from '../api/client';
 
 const MOCK_CROWD = [
@@ -17,6 +17,10 @@ function RiskBadge({ pct }) {
   if (pct >= 65) return <span className="badge bg-blue-900/40 text-blue-400">🔵 Medium</span>;
   return <span className="badge bg-green-900/40 text-green-400">🟢 Low</span>;
 }
+
+RiskBadge.propTypes = {
+  pct: PropTypes.number.isRequired,
+};
 
 export default function CrowdDashboard({ stadiumId }) {
   const [crowdData, setCrowdData] = useState(MOCK_CROWD);
@@ -169,7 +173,7 @@ export default function CrowdDashboard({ stadiumId }) {
 
           {!aiAnalysis && !loadingAnalysis && (
             <div className="text-center text-gray-400 text-sm py-4">
-              Click "Run AI Analysis" for real-time crowd intelligence and staff recommendations
+              Click &quot;Run AI Analysis&quot; for real-time crowd intelligence and staff recommendations
             </div>
           )}
           {loadingAnalysis && (

@@ -1,3 +1,5 @@
+'use strict';
+
 const STADIUMS = [
   {
     id: 'metlife',

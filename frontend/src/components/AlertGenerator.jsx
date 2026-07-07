@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Bell, AlertTriangle, Info, AlertOctagon, Loader, Copy, CheckCheck, Volume2 } from 'lucide-react';
 import { generateAlert } from '../api/client';
 
@@ -182,3 +183,10 @@ export default function AlertGenerator({ stadiumId, stadium }) {
     </div>
   );
 }
+
+AlertGenerator.propTypes = {
+  stadiumId: PropTypes.string,
+  stadium: PropTypes.shape({
+    name: PropTypes.string,
+  }),
+};

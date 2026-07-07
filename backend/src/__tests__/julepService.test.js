@@ -3,6 +3,8 @@
  * These run entirely in-process, no HTTP, no external API needed.
  */
 
+'use strict';
+
 const { smartRespond } = require('../../src/services/julepService');
 const { STADIUMS, CROWD_DATA } = require('../../src/data/stadiums');
 

@@ -2,6 +2,8 @@
  * Tests: GET /api/crowd  — crowd data routes
  */
 
+'use strict';
+
 const request = require('supertest');
 const app     = require('../../src/server');
 
