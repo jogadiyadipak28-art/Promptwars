@@ -20,11 +20,11 @@ const QUICK_PROMPTS = [
 
 function TypingDots() {
   return (
-    <div className="flex items-end gap-2">
-      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#003DA5] to-[#00A8E0] flex items-center justify-center flex-shrink-0 shadow-lg">
+    <div className="flex items-end gap-2" role="status" aria-label="StadiumAI is typing">
+      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#003DA5] to-[#00A8E0] flex items-center justify-center flex-shrink-0 shadow-lg" aria-hidden="true">
         <Bot size={15} className="text-white" />
       </div>
-      <div className="bg-gray-800 border border-gray-700 rounded-2xl rounded-bl-sm px-4 py-3">
+      <div className="bg-gray-800 border border-gray-700 rounded-2xl rounded-bl-sm px-4 py-3" aria-hidden="true">
         <div className="flex gap-1.5 items-center h-4">
           <div className="w-2 h-2 bg-[#00A8E0] rounded-full typing-dot" />
           <div className="w-2 h-2 bg-[#00A8E0] rounded-full typing-dot" />
@@ -218,7 +218,13 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
       )}
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0">
+      <div
+        className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0"
+        role="log"
+        aria-live="polite"
+        aria-label="Chat conversation"
+        aria-relevant="additions"
+      >
         {messages.map((msg, i) => <Message key={i} msg={msg} />)}
         {loading && <TypingDots />}
         <div ref={bottomRef} />

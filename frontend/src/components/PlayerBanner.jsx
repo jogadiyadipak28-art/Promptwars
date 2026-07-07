@@ -6,7 +6,12 @@ const ALL = [...BANNER_IMAGES, ...BANNER_IMAGES];
 
 export default function PlayerBanner() {
   return (
-    <div className="relative py-8 overflow-hidden bg-gradient-to-b from-transparent via-brand-blue/8 to-brand-green/8">
+    <div
+      className="relative py-8 overflow-hidden"
+      style={{ background: 'linear-gradient(to bottom, transparent, rgba(125,211,252,0.06), rgba(74,222,128,0.06))' }}
+      aria-hidden="true"
+      role="presentation"
+    >
       <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-brand-darker to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-darker to-transparent z-10 pointer-events-none" />
 

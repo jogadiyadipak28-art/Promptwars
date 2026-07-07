@@ -91,6 +91,7 @@ function FeatureCard({ card, index, onSelect }) {
       ref={ref}
       role="button"
       tabIndex={0}
+      aria-label={`${card.title} — ${card.desc} Click to open.`}
       onClick={() => onSelect(card.id)}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(card.id); } }}
       className={`feature-card group bg-gradient-to-br ${card.gradient} hover-glow
@@ -141,7 +142,7 @@ export default function FeaturesSection({ onSelectFeature }) {
   const [titleRef, titleInView] = useInView(0.2);
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-20 relative overflow-hidden" aria-label="AI-powered features">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-brand-green/5 to-brand-blue/5 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">

@@ -12,6 +12,10 @@
     --brand-red: #F87171;
     --brand-bg: #0C1B2E;
     --brand-bg-deep: #081420;
+
+    /* Accessible text variants — always ≥4.5:1 on #081420 background */
+    --text-muted: #94a3b8;   /* slate-400 — 5.9:1 on #081420 */
+    --text-dim:   #64748b;   /* slate-500 — 3.5:1 — only for large/bold text */
   }
   body {
     background-color: var(--brand-bg-deep);
@@ -28,6 +32,17 @@
   ::-webkit-scrollbar-track { background: #081420; }
   ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 999px; }
   ::-webkit-scrollbar-thumb:hover { background: #38BDF8; }
+
+  /* Global focus-visible ring — keyboard-only, doesn't show on mouse click */
+  :focus-visible {
+    outline: 2px solid #38BDF8;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* Remove default outline for mouse users (already handled by focus-visible) */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
 }
 
 @layer components {
@@ -61,11 +76,13 @@
            px-5 py-2.5 rounded-xl transition-all duration-200 active:scale-95;
   }
   .input {
-    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white
-           placeholder-gray-400 focus:outline-none focus:bg-white/10 transition-all;
+    @apply w-full border rounded-xl px-4 py-3 text-white
+           placeholder-gray-400 focus:outline-none transition-all;
+    background: rgba(255,255,255,0.05);
     border-color: rgba(255,255,255,0.1);
   }
   .input:focus {
+    background: rgba(255,255,255,0.10);
     border-color: rgba(125,211,252,0.8);
     box-shadow: 0 0 0 1px rgba(74,222,128,0.4);
   }
@@ -267,6 +284,26 @@
   scrollbar-width: none;
 }
 .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* ── Reduced-motion: disable all animations / transitions ────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:   0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration:  0.01ms !important;
+    scroll-behavior:      auto   !important;
+  }
+  .scroll-banner { animation: none; }
+  .shimmer-text  { animation: none; background-position: 0 center; }
+  .ball-bounce   { animation: none; }
+  .typing-dot    { animation: none; opacity: 1; transform: none; }
+  .float-anim,
+  .float-anim-2  { animation: none; }
+  .glow-pulse    { animation: none; }
+  .reveal        { opacity: 1; transform: none; }
+}
 
 /* Infinite image banner scroll */
 @keyframes scrollBanner {
