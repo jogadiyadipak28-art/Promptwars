@@ -275,4 +275,95 @@ describe('AI Routes', () => {
       expect(res.body.alert).toBeTruthy();
     });
   });
+
+  // ── Operational Intelligence ─────────────────────────────────────────────
+  describe('POST /api/ai/operational-intelligence', () => {
+    it('returns operational intelligence for valid stadium', async () => {
+      const res = await request(app)
+        .post('/api/ai/operational-intelligence')
+        .send({ stadiumId: 'metlife' });
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('intelligence');
+      expect(res.body.intelligence).toContain('OPERATIONAL INTELLIGENCE');
+    });
+
+    it('returns 400 when stadiumId is missing', async () => {
+      const res = await request(app)
+        .post('/api/ai/operational-intelligence')
+        .send({});
+      expect(res.status).toBe(400);
+    });
+
+    it('returns 404 for unknown stadiumId', async () => {
+      const res = await request(app)
+        .post('/api/ai/operational-intelligence')
+        .send({ stadiumId: 'fake-stadium' });
+      expect(res.status).toBe(404);
+    });
+
+    it('accepts custom timeFrame and focusAreas', async () => {
+      const res = await request(app)
+        .post('/api/ai/operational-intelligence')
+        .send({ stadiumId: 'sofi', timeFrame: '2h', focusAreas: ['crowd', 'safety'] });
+      expect(res.status).toBe(200);
+      expect(res.body.timeFrame).toBe('2h');
+    });
+  });
+
+  // ── Emergency Response ─────────────────────────────────────────────────────
+  describe('POST /api/ai/emergency-response', () => {
+    it('returns emergency response plan', async () => {
+      const res = await request(app)
+        .post('/api/ai/emergency-response')
+        .send({ stadiumId: 'metlife', emergencyType: 'medical' });
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('response');
+      expect(res.body.response).toContain('EMERGENCY RESPONSE');
+    });
+
+    it('returns 400 when required fields are missing', async () => {
+      const res = await request(app)
+        .post('/api/ai/emergency-response')
+        .send({ stadiumId: 'metlife' });
+      expect(res.status).toBe(400);
+    });
+
+    it('accepts custom severity and affectedArea', async () => {
+      const res = await request(app)
+        .post('/api/ai/emergency-response')
+        .send({ stadiumId: 'bcplace', emergencyType: 'fire', severity: 'high', affectedArea: 'Section 100' });
+      expect(res.status).toBe(200);
+      expect(res.body.severity).toBe('high');
+    });
+  });
+
+  // ── Resource Optimization ─────────────────────────────────────────────────
+  describe('POST /api/ai/resource-optimization', () => {
+    it('returns resource optimization plan', async () => {
+      const res = await request(app)
+        .post('/api/ai/resource-optimization')
+        .send({ stadiumId: 'metlife' });
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('optimization');
+      expect(res.body.optimization).toContain('RESOURCE OPTIMIZATION');
+    });
+
+    it('returns 400 when stadiumId is missing', async () => {
+      const res = await request(app)
+        .post('/api/ai/resource-optimization')
+        .send({});
+      expect(res.status).toBe(400);
+    });
+
+    it('accepts custom resourceType and optimizationGoal', async () => {
+      const res = await request(app)
+        .post('/api/ai/resource-optimization')
+        .send({ stadiumId: 'azteca', resourceType: 'staff', optimizationGoal: 'cost-savings' });
+      expect(res.status).toBe(200);
+      expect(res.body.resourceType).toBe('staff');
+    });
+  });
 });

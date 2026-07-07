@@ -214,6 +214,15 @@ function smartRespond(message, stadium, crowd) {
 }
 
 // ── Main chat function ────────────────────────────────────────────────────
+/**
+ * Main chat function that processes user messages with session context.
+ * Handles conversation history, stadium context, and AI fallback.
+ *
+ * @param {string} clientSessionId - Unique session identifier
+ * @param {string} userMessage - User's message
+ * @param {string} contextHint - Optional context hint with stadium information
+ * @returns {Promise<string>} AI response
+ */
 async function chat(clientSessionId, userMessage, contextHint = '') {
   const session = getSession(clientSessionId);
 

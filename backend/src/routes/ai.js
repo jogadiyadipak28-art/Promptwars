@@ -24,11 +24,14 @@ const router = express.Router();
 
 // ─── Helper: build stadium context string for AI prompts ─────────────────────
 /**
- * @param {object} stadium
- * @param {object|null} crowd
- * @param {number|null} occupancyPct
- * @param {string} language
- * @returns {string}
+ * Builds a comprehensive context string for AI prompts containing stadium details,
+ * crowd information, and operational data.
+ *
+ * @param {import('../data/stadiums').Stadium} stadium - Stadium object with facilities and transportation
+ * @param {import('../data/stadiums').CrowdData|null} crowd - Current crowd data or null
+ * @param {number|null} occupancyPct - Occupancy percentage (0-100) or null
+ * @param {string} language - Target language for AI responses
+ * @returns {string} Formatted context string for AI prompts
  */
 function buildStadiumContext(stadium, crowd, occupancyPct, language) {
   if (!stadium) return '';
@@ -316,6 +319,183 @@ router.post(
         `Medical stations: ${(facilities.medicalStations || []).join(', ')}\n\n` +
         `Stay hydrated. Radio check every 30 minutes. Thank you! ⚽`,
       role, stadium: stadium.name, shiftTime, source: 'smart-engine',
+    });
+  })
+);
+
+// ─── OPERATIONAL INTELLIGENCE ────────────────────────────────────────────────
+router.post(
+  '/operational-intelligence',
+  requireFields(['stadiumId']),
+  requireStadium,
+  asyncHandler(async (req, res) => {
+    const { timeFrame = '1h', focusAreas = ['crowd', 'staffing', 'resources'] } = req.body;
+    const stadium = req.stadium;
+    const crowd = CROWD_DATA[stadium.id];
+    const occupancyPct = calcOccupancy(crowd);
+
+    const intelligence = await chat(
+      'You are an AI operational intelligence analyst for FIFA World Cup 2026. Provide data-driven insights for stadium operations.',
+      `Generate operational intelligence for ${stadium.name}:\n` +
+      `- Time frame: ${timeFrame}\n- Current occupancy: ${occupancyPct}%\n` +
+      `- Focus areas: ${focusAreas.join(', ')}\n` +
+      `- Congestion: ${(crowd.hotspots || []).join(', ')}\n` +
+      `- Gate wait times: ${JSON.stringify(crowd.waitTimes || {})}\n\n` +
+      `Provide: 1. Predictive insights 2. Resource recommendations 3. Risk assessment 4. Action items`,
+      AI_PARAMS.CROWD_ANALYSIS
+    );
+
+    if (intelligence) {
+      return res.json({ intelligence, stadium: stadium.name, timeFrame, focusAreas });
+    }
+
+    // Smart-engine fallback
+    const riskLevel = getAnalysisRiskLabel(occupancyPct);
+    const { fast: fastGate } = fastestAndSlowestGate(crowd.waitTimes || {});
+    const fastGateName = fastGate ? fastGate[0] : 'Unknown';
+
+    res.json({
+      intelligence:
+        `📊 OPERATIONAL INTELLIGENCE — ${stadium.name}\n\n` +
+        `**Time Frame:** ${timeFrame} | **Risk Level:** ${riskLevel}\n\n` +
+        `**Current Status:**\n` +
+        `• Occupancy: ${occupancyPct}%\n` +
+        `• Congestion: ${(crowd.hotspots || []).join(', ')}\n` +
+        `• Fastest Gate: ${fastGateName}\n\n` +
+        `**Predictive Insights:**\n` +
+        `• Peak entry expected 30 min before kickoff\n` +
+        `• Exit congestion projected 15 min post-match\n` +
+        `• ${occupancyPct >= 80 ? 'High demand on concessions and restrooms' : 'Normal resource utilization'}\n\n` +
+        `**Resource Recommendations:**\n` +
+        `• Deploy extra staff to ${(crowd.hotspots || [])[0] || 'high-traffic zones'}\n` +
+        `• Pre-stage medical teams near accessible areas\n` +
+        `• Monitor ${fastGateName} for overflow\n\n` +
+        `**Action Items:**\n` +
+        `1. Review crowd flow every 15 min\n` +
+        `2. Prepare contingency plans for ${occupancyPct >= 90 ? 'overcrowding' : 'normal operations'}\n` +
+        `3. Coordinate with transport for post-match surge`,
+      stadium: stadium.name, timeFrame, focusAreas, source: 'smart-engine',
+    });
+  })
+);
+
+// ─── EMERGENCY RESPONSE COORDINATION ───────────────────────────────────────────
+router.post(
+  '/emergency-response',
+  requireFields(['stadiumId', 'emergencyType']),
+  requireStadium,
+  asyncHandler(async (req, res) => {
+    const { emergencyType, severity = 'medium', affectedArea = 'general', language = DEFAULTS.LANGUAGE } = req.body;
+    const stadium = req.stadium;
+    const crowd = CROWD_DATA[stadium.id];
+    const occupancyPct = calcOccupancy(crowd);
+
+    const response = await chat(
+      'You are an AI emergency response coordinator for FIFA World Cup 2026. Provide clear, actionable emergency protocols.',
+      `Generate emergency response plan for ${stadium.name}:\n` +
+      `- Emergency type: ${emergencyType}\n- Severity: ${severity}\n` +
+      `- Affected area: ${affectedArea}\n- Occupancy: ${occupancyPct}%\n` +
+      `- Medical stations: ${(stadium.facilities?.medicalStations || []).join(', ')}\n` +
+      `- Accessible entrances: ${(stadium.facilities?.accessibleEntrances || []).join(', ')}\n\n` +
+      `Provide: 1. Immediate actions 2. Evacuation routes 3. Staff coordination 4. Communication plan`,
+      AI_PARAMS.CROWD_ANALYSIS
+    );
+
+    if (response) {
+      return res.json({ response, emergencyType, severity, stadium: stadium.name });
+    }
+
+    // Smart-engine fallback
+    const facilities = stadium.facilities || {};
+    const medicalLocations = facilities.medicalStations || ['Medical Center'];
+    const accessibleExits = facilities.accessibleEntrances || ['Main Exit'];
+
+    res.json({
+      response:
+        `🚨 EMERGENCY RESPONSE — ${stadium.name}\n\n` +
+        `**Type:** ${emergencyType.toUpperCase()} | **Severity:** ${severity.toUpperCase()}\n` +
+        `**Affected Area:** ${affectedArea}\n\n` +
+        `**IMMEDIATE ACTIONS:**\n` +
+        `1. Alert all staff via radio channel 1\n` +
+        `2. Activate emergency protocols for ${emergencyType}\n` +
+        `3. Secure affected area: ${affectedArea}\n` +
+        `4. Notify medical teams at: ${medicalLocations.join(', ')}\n\n` +
+        `**EVACUATION ROUTES:**\n` +
+        `• Primary: Nearest emergency exit\n` +
+        `• Accessible: ${accessibleExits.join(', ')}\n` +
+        `• Assembly point: Designated safe zone outside stadium\n\n` +
+        `**STAFF COORDINATION:**\n` +
+        `• Security: Secure perimeter and direct crowd flow\n` +
+        `• Medical: Deploy to affected area and triage points\n` +
+        `• Volunteers: Assist with evacuation and accessibility\n\n` +
+        `**COMMUNICATION:**\n` +
+        `• PA announcement in ${language}\n` +
+        `• Digital signage updates\n` +
+        `• App push notification to fans in affected zone`,
+      emergencyType, severity, stadium: stadium.name, source: 'smart-engine',
+    });
+  })
+);
+
+// ─── RESOURCE OPTIMIZATION ───────────────────────────────────────────────────
+router.post(
+  '/resource-optimization',
+  requireFields(['stadiumId']),
+  requireStadium,
+  asyncHandler(async (req, res) => {
+    const { resourceType = 'all', optimizationGoal = 'efficiency', language = DEFAULTS.LANGUAGE } = req.body;
+    const stadium = req.stadium;
+    const crowd = CROWD_DATA[stadium.id];
+    const occupancyPct = calcOccupancy(crowd);
+
+    const optimization = await chat(
+      'You are an AI resource optimization specialist for FIFA World Cup 2026. Maximize efficiency and minimize waste.',
+      `Generate resource optimization plan for ${stadium.name}:\n` +
+      `- Resource type: ${resourceType}\n- Goal: ${optimizationGoal}\n` +
+      `- Occupancy: ${occupancyPct}%\n- Congestion: ${(crowd.hotspots || []).join(', ')}\n` +
+      `- Capacity: ${stadium.capacity.toLocaleString()}\n\n` +
+      `Provide: 1. Current utilization 2. Optimization strategies 3. Cost savings 4. Environmental impact`,
+      AI_PARAMS.CROWD_ANALYSIS
+    );
+
+    if (optimization) {
+      return res.json({ optimization, stadium: stadium.name, resourceType, optimizationGoal });
+    }
+
+    // Smart-engine fallback
+    const highOccupancy = occupancyPct >= 80;
+    const congestionAreas = crowd.hotspots || [];
+
+    res.json({
+      optimization:
+        `⚡ RESOURCE OPTIMIZATION — ${stadium.name}\n\n` +
+        `**Resource Type:** ${resourceType} | **Goal:** ${optimizationGoal}\n\n` +
+        `**Current Utilization:**\n` +
+        `• Staff: ${highOccupancy ? '95% deployed' : '70% deployed'}\n` +
+        `• Concessions: ${highOccupancy ? 'Peak capacity' : 'Normal operations'}\n` +
+        `• Medical: ${highOccupancy ? 'High demand' : 'Standard staffing'}\n` +
+        `• Security: ${highOccupancy ? 'Full deployment' : 'Routine patrol'}\n\n` +
+        `**Optimization Strategies:**\n` +
+        `1. **Staff Allocation:**\n` +
+        `   - Redirect 20% staff to ${congestionAreas[0] || 'high-traffic zones'}\n` +
+        `   - Implement dynamic shift scheduling based on crowd flow\n\n` +
+        `2. **Resource Management:**\n` +
+        `   - Pre-stock concessions before peak periods\n` +
+        `   - Deploy mobile medical units to accessible areas\n` +
+        `   - Use predictive analytics for inventory\n\n` +
+        `3. **Energy Efficiency:**\n` +
+        `   - Adjust HVAC based on occupancy zones\n` +
+        `   - Implement smart lighting in concourses\n` +
+        `   - Optimize digital signage brightness\n\n` +
+        `**Cost Savings:**\n` +
+        `• Estimated 15-20% reduction in overtime costs\n` +
+        `• 10% decrease in resource waste\n` +
+        `• Improved staff utilization efficiency\n\n` +
+        `**Environmental Impact:**\n` +
+        `• Reduced energy consumption through smart controls\n` +
+        `• Minimized food waste via predictive ordering\n` +
+        `• Lower carbon footprint through optimized logistics`,
+      stadium: stadium.name, resourceType, optimizationGoal, source: 'smart-engine',
     });
   })
 );

@@ -25,6 +25,14 @@ if (apiKey && apiKey.trim()) {
 /**
  * Core chat completion wrapper with system prompt injection.
  * Returns null if OpenAI is unavailable, so callers can fall back.
+ *
+ * @param {string} systemPrompt - System prompt defining AI behavior
+ * @param {string} userMessage - User message to process
+ * @param {Object} options - Optional configuration
+ * @param {number} [options.temperature=0.7] - Response randomness (0-2)
+ * @param {number} [options.max_tokens=600] - Maximum response tokens
+ * @param {string} [options.model='gpt-4o-mini'] - OpenAI model to use
+ * @returns {Promise<string|null>} AI response or null if unavailable
  */
 async function chat(systemPrompt, userMessage, options = {}) {
   if (!openai) return null;
@@ -48,8 +56,16 @@ async function chat(systemPrompt, userMessage, options = {}) {
 }
 
 /**
- * Multi-turn conversation support.
+ * Multi-turn conversation support with message history.
  * Returns null if OpenAI is unavailable, so callers can fall back.
+ *
+ * @param {string} systemPrompt - System prompt defining AI behavior
+ * @param {Array<{role: string, content: string}>} messages - Conversation history
+ * @param {Object} options - Optional configuration
+ * @param {number} [options.temperature=0.7] - Response randomness (0-2)
+ * @param {number} [options.max_tokens=800] - Maximum response tokens
+ * @param {string} [options.model='gpt-4o-mini'] - OpenAI model to use
+ * @returns {Promise<string|null>} AI response or null if unavailable
  */
 async function chatWithHistory(systemPrompt, messages, options = {}) {
   if (!openai) return null;
@@ -69,7 +85,11 @@ async function chatWithHistory(systemPrompt, messages, options = {}) {
   }
 }
 
-/** Returns true if OpenAI is connected and available */
+/**
+ * Checks if OpenAI service is connected and available.
+ *
+ * @returns {boolean} True if OpenAI is available, false otherwise
+ */
 function isAvailable() {
   return openai !== null;
 }

@@ -139,6 +139,66 @@ const MATCHES = [
   { id: 'm5', stadium: 'bcplace', home: 'Canada',  away: 'Morocco',   date: '2026-06-18', time: '16:00', group: 'Group F', matchday: 1 },
 ];
 
+// ── Type Definitions for JSDoc ────────────────────────────────────────────────
+/**
+ * @typedef {Object} Stadium
+ * @property {string} id - Unique stadium identifier
+ * @property {string} name - Stadium name
+ * @property {string} city - City location
+ * @property {string} country - Country
+ * @property {number} capacity - Seating capacity
+ * @property {string[]} gates - List of gate names
+ * @property {StadiumFacilities} facilities - Stadium facilities and amenities
+ * @property {Transportation} transportation - Transport options
+ * @property {Sections} sections - Seating section information
+ */
+
+/**
+ * @typedef {Object} StadiumFacilities
+ * @property {string[]} medicalStations - Medical station locations
+ * @property {string[]} familyZones - Family zone locations
+ * @property {string[]} accessibleEntrances - Accessible entrance locations
+ * @property {number} concessions - Number of concession stands
+ * @property {number} restrooms - Number of restrooms
+ * @property {string[]} prayerRooms - Prayer room locations
+ * @property {string[]} firstAid - First aid locations
+ */
+
+/**
+ * @typedef {Object} Transportation
+ * @property {string|string[]} subway - Subway/metro options
+ * @property {string|string[]} bus - Bus options
+ * @property {string|string[]} parking - Parking options
+ * @property {string} rideshare - Rideshare pickup location
+ */
+
+/**
+ * @typedef {Object} Sections
+ * @property {string} lower - Lower bowl sections
+ * @property {string} club - Club level sections
+ * @property {string} upper - Upper bowl sections
+ */
+
+/**
+ * @typedef {Object} CrowdData
+ * @property {number} currentOccupancy - Current number of fans
+ * @property {number} capacity - Maximum capacity
+ * @property {string[]} hotspots - Congested areas
+ * @property {Record<string, number>} waitTimes - Gate wait times in minutes
+ */
+
+/**
+ * @typedef {Object} Match
+ * @property {string} id - Match identifier
+ * @property {string} stadium - Stadium ID
+ * @property {string} home - Home team
+ * @property {string} away - Away team
+ * @property {string} date - Match date
+ * @property {string} time - Match time
+ * @property {string} group - Group name
+ * @property {number} matchday - Match day number
+ */
+
 // ── O(1) lookup maps — built once at startup, not on every request ─────────
 const STADIUM_MAP = new Map(STADIUMS.map(s => [s.id, s]));
 const MATCHES_BY_STADIUM = MATCHES.reduce((acc, m) => {
@@ -149,8 +209,8 @@ const MATCHES_BY_STADIUM = MATCHES.reduce((acc, m) => {
 
 /**
  * getStadium(id) — O(1) Map lookup instead of O(n) Array.find every request.
- * @param {string} id
- * @returns {object|undefined}
+ * @param {string} id - Stadium identifier
+ * @returns {Stadium|undefined} Stadium object or undefined if not found
  */
 function getStadium(id) {
   return STADIUM_MAP.get(id);
@@ -158,8 +218,8 @@ function getStadium(id) {
 
 /**
  * getMatchesForStadium(id) — O(1) pre-grouped lookup.
- * @param {string} id
- * @returns {object[]}
+ * @param {string} id - Stadium identifier
+ * @returns {Match[]} Array of matches at the stadium
  */
 function getMatchesForStadium(id) {
   return MATCHES_BY_STADIUM[id] || [];
@@ -167,8 +227,8 @@ function getMatchesForStadium(id) {
 
 /**
  * calcOccupancy(crowd) — single shared utility, no repeated inline formula.
- * @param {{ currentOccupancy: number, capacity: number }} crowd
- * @returns {number} integer percentage 0-100
+ * @param {CrowdData} crowd - Crowd data object
+ * @returns {number} Occupancy percentage (0-100)
  */
 function calcOccupancy(crowd) {
   return Math.round((crowd.currentOccupancy / crowd.capacity) * 100);
@@ -176,8 +236,8 @@ function calcOccupancy(crowd) {
 
 /**
  * fastestAndSlowestGate(waitTimes) — single O(n) pass instead of two sorts.
- * @param {Record<string, number>} waitTimes
- * @returns {{ fast: [string, number], slow: [string, number] }}
+ * @param {Record<string, number>} waitTimes - Object mapping gate names to wait times
+ * @returns {{ fast: [string, number]|null, slow: [string, number]|null }} Fastest and slowest gates with names and times
  */
 function fastestAndSlowestGate(waitTimes) {
   let fast = null;
