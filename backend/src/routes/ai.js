@@ -32,16 +32,17 @@ const router = express.Router();
  */
 function buildStadiumContext(stadium, crowd, occupancyPct, language) {
   if (!stadium) return '';
+  const facilities = stadium.facilities || {};
   return (
     `Current Stadium: ${stadium.name}, ${stadium.city}\n` +
     `Capacity: ${stadium.capacity.toLocaleString()} | Current Occupancy: ${occupancyPct}%\n` +
-    `Gates: ${stadium.gates.join(', ')}\n` +
-    `Accessible Entrances: ${stadium.facilities.accessibleEntrances.join(', ')}\n` +
-    `Medical Stations: ${stadium.facilities.medicalStations.join(', ')}\n` +
-    `Family Zones: ${stadium.facilities.familyZones.join(', ')}\n` +
-    `Prayer Rooms: ${stadium.facilities.prayerRooms.join(', ')}\n` +
+    `Gates: ${(stadium.gates || []).join(', ')}\n` +
+    `Accessible Entrances: ${(facilities.accessibleEntrances || []).join(', ')}\n` +
+    `Medical Stations: ${(facilities.medicalStations || []).join(', ')}\n` +
+    `Family Zones: ${(facilities.familyZones || []).join(', ')}\n` +
+    `Prayer Rooms: ${(facilities.prayerRooms || []).join(', ')}\n` +
     `Transport: ${JSON.stringify(stadium.transportation)}\n` +
-    (crowd ? `Hot Spots (congested areas): ${crowd.hotspots.join(', ')}\n` : '') +
+    (crowd ? `Hot Spots (congested areas): ${(crowd.hotspots || []).join(', ')}\n` : '') +
     `\nAlways respond in ${language}.`
   );
 }
@@ -109,11 +110,13 @@ router.post(
 
     const avoidNote  = hotspots.length ? `\n⚠️ Avoid: ${hotspots.join(', ')}` : '';
     const accessNote = accessibility ? '\n♿ Use accessible entrances and lifts.' : '';
+    const gates = stadium.gates || [];
+    const gateText = gates.length >= 2 ? `${gates[0]} or ${gates[1]}` : gates.length === 1 ? gates[0] : 'the nearest gate';
 
     res.json({
       instructions:
         `🗺️ Directions from "${from}" to "${to}" at ${stadium.name}:\n\n` +
-        `1. Enter through the nearest gate (${stadium.gates[0]} or ${stadium.gates[1]})\n` +
+        `1. Enter through ${gateText}\n` +
         `2. Follow concourse signs toward your destination\n` +
         `3. Blue signage = facilities, green = exits\n` +
         `4. Staff in red vests can assist\n\n` +
@@ -132,17 +135,19 @@ router.post(
     const stadium      = req.stadium;
     const crowd        = CROWD_DATA[stadium.id];
     const occupancyPct = calcOccupancy(crowd);
-    const { fast: fastGate, slow: slowGate } = fastestAndSlowestGate(crowd.waitTimes);
+    const { fast: fastGate, slow: slowGate } = fastestAndSlowestGate(crowd.waitTimes || {});
 
-    const waitTimesStr = Object.entries(crowd.waitTimes)
+    const waitTimesStr = Object.entries(crowd.waitTimes || {})
       .map(([gate, mins]) => `${gate}: ${mins} min`)
       .join(', ');
+
+    const hotspotsList = (crowd.hotspots || []).join(', ');
 
     const analysis = await chat(
       'You are an AI crowd safety analyst for FIFA World Cup 2026. Provide data-driven, actionable intelligence.',
       `Analyze crowd at ${stadium.name}:\n` +
       `- Occupancy: ${crowd.currentOccupancy.toLocaleString()} / ${crowd.capacity.toLocaleString()} (${occupancyPct}%)\n` +
-      `- Hotspots: ${crowd.hotspots.join(', ')}\n` +
+      `- Hotspots: ${hotspotsList}\n` +
       `- Wait times: ${waitTimesStr}\n\n` +
       `Provide: 1. Risk level  2. Top 3 staff recommendations  3. Fan advisory  4. 30-min outlook`,
       AI_PARAMS.CROWD_ANALYSIS
@@ -152,16 +157,22 @@ router.post(
 
     const riskLevel = getAnalysisRiskLabel(occupancyPct);
 
+    const fastGateName = fastGate ? fastGate[0] : 'Unknown';
+    const fastGateTime = fastGate ? fastGate[1] : 0;
+    const slowGateName = slowGate ? slowGate[0] : 'Unknown';
+    const slowGateTime = slowGate ? slowGate[1] : 0;
+    const primaryHotspot = (crowd.hotspots || [])[0] || 'congested zones';
+
     res.json({
       analysis:
         `📊 Crowd Analysis — ${stadium.name}\n\n` +
         `**Risk Level:** ${riskLevel}\n\n` +
-        `**Status:** Occupancy ${occupancyPct}% | Congested: ${crowd.hotspots.join(', ')}\n\n` +
+        `**Status:** Occupancy ${occupancyPct}% | Congested: ${hotspotsList}\n\n` +
         `**Recommendations:**\n` +
-        `1. Direct fans to ${fastGate[0]} (${fastGate[1]} min — fastest)\n` +
-        `2. Avoid ${slowGate[0]} (${slowGate[1]} min — slowest)\n` +
+        `1. Direct fans to ${fastGateName} (${fastGateTime} min — fastest)\n` +
+        `2. Avoid ${slowGateName} (${slowGateTime} min — slowest)\n` +
         `3. ${occupancyPct >= OCCUPANCY_THRESHOLDS.ANALYSIS_HIGH ? 'Deploy extra staff to congested zones' : 'Monitor — no action required'}\n\n` +
-        `**Fan Advisory:** Use ${fastGate[0]}. Avoid ${crowd.hotspots[0] || 'congested zones'}.`,
+        `**Fan Advisory:** Use ${fastGateName}. Avoid ${primaryHotspot}.`,
       crowdData: crowd, occupancyPct, stadium: stadium.name, source: 'smart-engine',
     });
   })
@@ -276,13 +287,14 @@ router.post(
     const crowd        = CROWD_DATA[stadium.id];
     const occupancyPct = calcOccupancy(crowd);
 
+    const facilities = stadium.facilities || {};
     const brief = await chat(
       `You are a volunteer coordinator for FIFA World Cup 2026.\n` +
       `Write concise role-specific shift briefings. Clear sections. Under 200 words.`,
       `Briefing in ${language} for:\nRole: ${role}\nStadium: ${stadium.name}, ${stadium.city}\n` +
       `Shift: ${shiftTime}\nOccupancy: ${occupancyPct}%\n` +
-      `Congestion: ${crowd.hotspots.join(', ')}\n` +
-      `Accessible entrances: ${stadium.facilities.accessibleEntrances.join(', ')}`,
+      `Congestion: ${(crowd.hotspots || []).join(', ')}\n` +
+      `Accessible entrances: ${(facilities.accessibleEntrances || []).join(', ')}`,
       AI_PARAMS.VOLUNTEER
     );
 
@@ -294,14 +306,14 @@ router.post(
       brief:
         `📋 SHIFT BRIEFING — ${stadium.name}\n\n` +
         `Role: ${role} | Shift: ${shiftTime} | Location: ${stadium.name}, ${stadium.city}\n\n` +
-        `Current Conditions: Occupancy ${occupancyPct}% (${riskLevel}) | Congestion: ${crowd.hotspots.join(', ')}\n\n` +
+        `Current Conditions: Occupancy ${occupancyPct}% (${riskLevel}) | Congestion: ${(crowd.hotspots || []).join(', ')}\n\n` +
         `Key Responsibilities:\n` +
         `1. Assist fans with wayfinding and ticket scanning\n` +
         `2. Monitor your zone for safety concerns\n` +
-        `3. Direct fans to accessible entrances: ${stadium.facilities.accessibleEntrances.join(', ')}\n` +
+        `3. Direct fans to accessible entrances: ${(facilities.accessibleEntrances || []).join(', ')}\n` +
         `4. Report incidents to control room immediately\n\n` +
         `Priority: ${occupancyPct >= OCCUPANCY_THRESHOLDS.ANALYSIS_HIGH ? 'High crowd density — extra vigilance required' : 'Normal operations'}\n` +
-        `Medical stations: ${stadium.facilities.medicalStations.join(', ')}\n\n` +
+        `Medical stations: ${(facilities.medicalStations || []).join(', ')}\n\n` +
         `Stay hydrated. Radio check every 30 minutes. Thank you! ⚽`,
       role, stadium: stadium.name, shiftTime, source: 'smart-engine',
     });

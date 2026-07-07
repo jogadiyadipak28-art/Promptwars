@@ -69,9 +69,9 @@ router.post(
     if (recommendation) return res.json({ recommendation, stadium: stadium.name, origin });
 
     // Smart-engine fallback — variables computed once, not repeated
-    const subwayLine  = Array.isArray(t.subway)  ? t.subway[0]  : t.subway;
-    const busLine     = Array.isArray(t.bus)      ? t.bus[0]     : t.bus;
-    const parkingInfo = Array.isArray(t.parking)  ? t.parking.join(', ') : t.parking;
+    const subwayLine  = Array.isArray(t.subway) && t.subway.length > 0 ? t.subway[0] : t.subway;
+    const busLine     = Array.isArray(t.bus) && t.bus.length > 0 ? t.bus[0] : t.bus;
+    const parkingInfo = Array.isArray(t.parking) ? t.parking.join(', ') : t.parking;
     const groupTip    = groupSize > 3
       ? 'For your group, consider splitting between rideshare vehicles'
       : 'Public transit is best for speed and sustainability';

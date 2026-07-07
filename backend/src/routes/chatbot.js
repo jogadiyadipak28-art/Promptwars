@@ -44,16 +44,17 @@ router.post(
     const crowd        = stadiumId ? CROWD_DATA[stadiumId] : null;
     const occupancyPct = crowd ? calcOccupancy(crowd) : null;
 
+    const facilities = stadium?.facilities || {};
     const contextHint = stadium
       ? `You are assisting a fan at ${stadium.name} in ${stadium.city}.\n` +
         `Stadium capacity: ${stadium.capacity.toLocaleString()} | Current occupancy: ${occupancyPct}%\n` +
-        `Gates: ${stadium.gates.join(', ')}\n` +
-        `Accessible entrances: ${stadium.facilities.accessibleEntrances.join(', ')}\n` +
-        `Medical stations: ${stadium.facilities.medicalStations.join(', ')}\n` +
-        `Family zones: ${stadium.facilities.familyZones.join(', ')}\n` +
-        `Prayer rooms: ${stadium.facilities.prayerRooms.join(', ')}\n` +
+        `Gates: ${(stadium.gates || []).join(', ')}\n` +
+        `Accessible entrances: ${(facilities.accessibleEntrances || []).join(', ')}\n` +
+        `Medical stations: ${(facilities.medicalStations || []).join(', ')}\n` +
+        `Family zones: ${(facilities.familyZones || []).join(', ')}\n` +
+        `Prayer rooms: ${(facilities.prayerRooms || []).join(', ')}\n` +
         `Congested areas: ${crowd?.hotspots?.join(', ') || 'none reported'}\n` +
-        `Gate wait times: ${crowd ? Object.entries(crowd.waitTimes).map(([g, t]) => `${g} ${t}min`).join(', ') : 'unavailable'}\n` +
+        `Gate wait times: ${crowd ? Object.entries(crowd.waitTimes || {}).map(([g, t]) => `${g} ${t}min`).join(', ') : 'unavailable'}\n` +
         `Transport: ${JSON.stringify(stadium.transportation)}\n` +
         `Respond in ${language}. Be concise (2-4 sentences max).`
       : `You are the official FIFA World Cup 2026 AI assistant. Respond in ${language}.`;

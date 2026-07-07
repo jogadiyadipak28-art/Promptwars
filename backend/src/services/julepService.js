@@ -7,7 +7,7 @@
 
 'use strict';
 
-const { CROWD_DATA, getStadium, calcOccupancy } = require('../data/stadiums');
+const { CROWD_DATA, getStadium, calcOccupancy, fastestAndSlowestGate } = require('../data/stadiums');
 const { chatWithHistory, isAvailable } = require('./openaiService');
 const {
   SESSION_TTL_MS,
@@ -78,17 +78,20 @@ const INTENTS = [
   },
   {
     patterns: ['medical', 'first aid', 'doctor', 'ambulance', 'emergency', 'hurt', 'injured', 'sick'],
-    respond: (stadium) =>
-      `🏥 Medical stations at ${stadium?.name || 'this stadium'}:\n\n` +
-      (stadium?.facilities?.medicalStations?.map(m => `• ${m}`).join('\n') ||
+    respond: (stadium) => {
+      const facilities = stadium?.facilities || {};
+      const medicalStations = facilities.medicalStations || [];
+      return `🏥 Medical stations at ${stadium?.name || 'this stadium'}:\n\n` +
+      (medicalStations.length > 0 ? medicalStations.map(m => `• ${m}`).join('\n') :
         '• Near Gate A (Ground Level)\n• Near Gate C (Level 2)') +
-      '\n\nFor emergencies, call stadium security at the nearest help point (orange pillars), or tell the nearest staff member.\n\n⚠️ For life-threatening emergencies, dial 911 immediately.'
+      '\n\nFor emergencies, call stadium security at the nearest help point (orange pillars), or tell the nearest staff member.\n\n⚠️ For life-threatening emergencies, dial 911 immediately.';
+    }
   },
   {
     patterns: ['food', 'eat', 'hungry', 'concession', 'snack', 'beer', 'drink', 'beverage'],
     respond: (stadium) =>
       `🍔 Food & drinks at ${stadium?.name || 'the stadium'}:\n\n` +
-      `• ${stadium?.facilities?.concessions || 40}+ food & beverage outlets across all levels\n` +
+      `• ${(stadium?.facilities?.concessions || 40)}+ food & beverage outlets across all levels\n` +
       `• Halal, vegetarian, and vegan options available — look for colour-coded signs\n` +
       `• Concession areas are open on every concourse level\n` +
       `• Pre-order via the official FIFA WC 2026 app to skip the queue\n\n` +
@@ -96,10 +99,13 @@ const INTENTS = [
   },
   {
     patterns: ['prayer', 'mosque', 'namaz', 'salah', 'worship', 'religion', 'faith'],
-    respond: (stadium) =>
-      `🕌 Prayer facilities at ${stadium?.name || 'the stadium'}:\n\n` +
-      (stadium?.facilities?.prayerRooms?.map(r => `• ${r}`).join('\n') || '• Level 2 East Wing\n• Level 3 West Wing') +
-      '\n\nThese quiet rooms are open throughout the event. Prayer mats and washing facilities are provided.\n\nStaff can escort you there if needed.'
+    respond: (stadium) => {
+      const facilities = stadium?.facilities || {};
+      const prayerRooms = facilities.prayerRooms || [];
+      return `🕌 Prayer facilities at ${stadium?.name || 'the stadium'}:\n\n` +
+      (prayerRooms.length > 0 ? prayerRooms.map(r => `• ${r}`).join('\n') : '• Level 2 East Wing\n• Level 3 West Wing') +
+      '\n\nThese quiet rooms are open throughout the event. Prayer mats and washing facilities are provided.\n\nStaff can escort you there if needed.';
+    }
   },
   {
     patterns: ['transport', 'bus', 'train', 'metro', 'subway', 'taxi', 'uber', 'lyft', 'rideshare', 'parking', 'car', 'get home', 'leave', 'after match'],
@@ -120,13 +126,16 @@ const INTENTS = [
       if (!crowd || !stadium) return '👥 Select a stadium above to see live crowd conditions.';
       const pct = calcOccupancy(crowd);
       const level = pct >= 90 ? '🔴 Very busy' : pct >= 80 ? '🟡 Busy' : pct >= 65 ? '🔵 Moderate' : '🟢 Comfortable';
-      const fastGate = Object.entries(crowd.waitTimes).sort((a, b) => a[1] - b[1])[0];
+      const { fast: fastGate } = fastestAndSlowestGate(crowd.waitTimes || {});
+      const fastGateName = fastGate ? fastGate[0] : 'Unknown';
+      const fastGateTime = fastGate ? fastGate[1] : 0;
+      const hotspotsList = (crowd.hotspots || []).join(', ');
       return `👥 Current crowd status at ${stadium.name}:\n\n` +
         `• Occupancy: ${crowd.currentOccupancy.toLocaleString()} / ${crowd.capacity.toLocaleString()} (${pct}%) — ${level}\n` +
-        `• Congested areas: ${crowd.hotspots.join(', ')}\n` +
-        `• Fastest entry: ${fastGate[0]} — only ${fastGate[1]} min wait\n\n` +
+        `• Congested areas: ${hotspotsList}\n` +
+        `• Fastest entry: ${fastGateName} — only ${fastGateTime} min wait\n\n` +
         `Gate wait times:\n` +
-        Object.entries(crowd.waitTimes).map(([g, t]) => `  ${g}: ${t} min`).join('\n');
+        Object.entries(crowd.waitTimes || {}).map(([g, t]) => `  ${g}: ${t} min`).join('\n');
     }
   },
   {

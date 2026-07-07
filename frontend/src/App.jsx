@@ -60,7 +60,11 @@ export default function App() {
 
   useEffect(() => {
     getStadiums()
-      .then(r => { setStadiums(r.data); setSelectedStadium(r.data[0]); })
+      .then(r => {
+        const stadiumData = r.data || [];
+        setStadiums(stadiumData);
+        setSelectedStadium(stadiumData.length > 0 ? stadiumData[0] : null);
+      })
       .catch(() => { setStadiums(FALLBACK_STADIUMS); setSelectedStadium(FALLBACK_STADIUMS[0]); });
   }, []);
 
