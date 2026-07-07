@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Users, AlertTriangle, RefreshCw, Brain } from 'lucide-react';
 import { getCrowdData, crowdAnalysis } from '../api/client';
 
@@ -182,3 +183,7 @@ export default function CrowdDashboard({ stadiumId }) {
     </div>
   );
 }
+
+CrowdDashboard.propTypes = {
+  stadiumId: PropTypes.string,
+};

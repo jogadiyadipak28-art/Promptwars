@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Send, Bot, User, RefreshCw } from 'lucide-react';
 import { fanAssistant } from '../api/client';
 
@@ -188,3 +189,7 @@ export default function FanAssistant({ stadiumId }) {
     </div>
   );
 }
+
+FanAssistant.propTypes = {
+  stadiumId: PropTypes.string,
+};

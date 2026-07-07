@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { Zap, MapPin, Users, Accessibility, Loader, Train, Bus, Car } from 'lucide-react';
+import PropTypes from 'prop-types';
+import { Zap, Users, Accessibility, Loader, Train, Bus, Car } from 'lucide-react';
 import { transportRecommend } from '../api/client';
 
 const LANGUAGES = ['English', 'Spanish', 'French', 'Portuguese', 'Arabic', 'German'];
@@ -142,3 +143,11 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
     </div>
   );
 }
+
+TransportAdvisor.propTypes = {
+  stadiumId: PropTypes.string,
+  stadium:   PropTypes.shape({
+    name:           PropTypes.string,
+    transportation: PropTypes.object,
+  }),
+};

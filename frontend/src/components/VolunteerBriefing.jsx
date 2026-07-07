@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Clipboard, User, Clock, Loader, Download } from 'lucide-react';
 import { volunteerBrief } from '../api/client';
 
@@ -151,3 +152,8 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
     </div>
   );
 }
+
+VolunteerBriefing.propTypes = {
+  stadiumId: PropTypes.string,
+  stadium:   PropTypes.shape({ name: PropTypes.string }),
+};

@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Map, Navigation, Accessibility, ArrowRight, Loader } from 'lucide-react';
 import { navigate } from '../api/client';
 
@@ -142,3 +143,10 @@ export default function NavigationTool({ stadiumId, stadium }) {
     </div>
   );
 }
+
+NavigationTool.propTypes = {
+  stadiumId: PropTypes.string,
+  stadium:   PropTypes.shape({
+    name: PropTypes.string,
+  }),
+};
