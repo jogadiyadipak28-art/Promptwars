@@ -13,7 +13,7 @@
  * and the service automatically upgrades to GPT responses.
  */
 
-const { STADIUMS, CROWD_DATA } = require('../data/stadiums');
+const { STADIUMS, CROWD_DATA, getStadium } = require('../data/stadiums');
 
 // ── Optional: OpenAI upgrade path ─────────────────────────────────────────
 let openai = null;
@@ -25,12 +25,16 @@ if (process.env.OPENAI_API_KEY) {
   } catch { /* openai package may not be installed */ }
 }
 
-// ── In-memory session store ─────────────────────────────────────────────
-const sessions = new Map(); // sessionId -> { history: [], stadiumId }
+// ── In-memory session store with TTL expiry ─────────────────────────────
+const SESSION_TTL_MS = 30 * 60 * 1000; // 30 minutes
+const sessions = new Map(); // sessionId -> { history, stadiumId, lastUsed }
 
 function getSession(sessionId) {
+  const now = Date.now();
   if (!sessions.has(sessionId)) {
-    sessions.set(sessionId, { history: [], stadiumId: null, createdAt: Date.now() });
+    sessions.set(sessionId, { history: [], stadiumId: null, lastUsed: now });
+  } else {
+    sessions.get(sessionId).lastUsed = now; // refresh TTL on access
   }
   return sessions.get(sessionId);
 }
@@ -38,6 +42,16 @@ function getSession(sessionId) {
 function deleteSession(sessionId) {
   sessions.delete(sessionId);
 }
+
+// Purge sessions older than SESSION_TTL_MS — runs every 10 minutes
+const _pruneInterval = setInterval(() => {
+  const cutoff = Date.now() - SESSION_TTL_MS;
+  for (const [id, session] of sessions) {
+    if (session.lastUsed < cutoff) sessions.delete(id);
+  }
+}, 10 * 60 * 1000);
+// Allow process to exit cleanly (unref so it doesn't block shutdown)
+if (_pruneInterval.unref) _pruneInterval.unref();
 
 // ── Smart rule-based response engine ───────────────────────────────────
 const INTENTS = [
@@ -209,7 +223,7 @@ async function chat(clientSessionId, userMessage, contextHint = '') {
   const stadiumMatch = contextHint.match(/stadium_id:(\w+)/);
   if (stadiumMatch) session.stadiumId = stadiumMatch[1];
 
-  const stadium = STADIUMS.find(s => s.id === session.stadiumId) || null;
+  const stadium = getStadium(session.stadiumId) || null; // O(1) Map lookup
   const crowd = session.stadiumId ? CROWD_DATA[session.stadiumId] : null;
 
   // Save to history

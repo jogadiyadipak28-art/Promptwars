@@ -13,15 +13,15 @@ const STADIUMS = [
       concessions: 48,
       restrooms: 36,
       prayerRooms: ['Level 2 East', 'Level 3 West'],
-      firstAid: ['Northeast Corner', 'Southwest Corner']
+      firstAid: ['Northeast Corner', 'Southwest Corner'],
     },
     transportation: {
       subway: ['NJ Transit Meadowlands Line – Direct Service'],
       bus: ['Routes 351, 355, 190 from Port Authority'],
       parking: ['Lots A-F', 'Remote Lot P (shuttle)'],
-      rideshare: 'Rideshare drop-off: Yellow Lot'
+      rideshare: 'Rideshare drop-off: Yellow Lot',
     },
-    sections: { lower: '100s', club: '200s', upper: '300s' }
+    sections: { lower: '100s', club: '200s', upper: '300s' },
   },
   {
     id: 'atandt',
@@ -37,15 +37,15 @@ const STADIUMS = [
       concessions: 52,
       restrooms: 40,
       prayerRooms: ['Level 1 South'],
-      firstAid: ['North End Zone', 'South End Zone']
+      firstAid: ['North End Zone', 'South End Zone'],
     },
     transportation: {
       subway: ['Trinity Railway Express – CentrePort/DFW Station'],
       bus: ['Arlington trolley from downtown'],
       parking: ['Lots 1-8', 'Remote Lot R (shuttle)'],
-      rideshare: 'Rideshare drop-off: Lot 7'
+      rideshare: 'Rideshare drop-off: Lot 7',
     },
-    sections: { lower: '100s', club: '200s', upper: '300s' }
+    sections: { lower: '100s', club: '200s', upper: '300s' },
   },
   {
     id: 'sofi',
@@ -61,15 +61,15 @@ const STADIUMS = [
       concessions: 55,
       restrooms: 38,
       prayerRooms: ['Level 2 West'],
-      firstAid: ['North Plaza', 'South Plaza']
+      firstAid: ['North Plaza', 'South Plaza'],
     },
     transportation: {
       subway: ['Metro C Line – Hawthorne/Lennox Station + shuttle'],
       bus: ['LAX Shuttle connecting routes'],
       parking: ['Lots A-L', 'Remote Lot M (shuttle)'],
-      rideshare: 'Rideshare drop-off: Lot C'
+      rideshare: 'Rideshare drop-off: Lot C',
     },
-    sections: { lower: '100s', club: '200s', upper: '300s' }
+    sections: { lower: '100s', club: '200s', upper: '300s' },
   },
   {
     id: 'azteca',
@@ -85,15 +85,15 @@ const STADIUMS = [
       concessions: 60,
       restrooms: 44,
       prayerRooms: ['Nivel 2 Este'],
-      firstAid: ['Plaza Norte', 'Plaza Sur']
+      firstAid: ['Plaza Norte', 'Plaza Sur'],
     },
     transportation: {
       subway: ['Metro Línea 2 – Tasqueña + autobús', 'Metro Línea 8 – Estadio Azteca (directo)'],
       bus: ['Metrobús Línea 4'],
       parking: ['Estacionamiento A-F'],
-      rideshare: 'Zona de rideshare: Puerta Sur'
+      rideshare: 'Zona de rideshare: Puerta Sur',
     },
-    sections: { lower: 'Numerado Inferior', club: 'Palcos', upper: 'Numerado Superior' }
+    sections: { lower: 'Numerado Inferior', club: 'Palcos', upper: 'Numerado Superior' },
   },
   {
     id: 'bcplace',
@@ -109,32 +109,91 @@ const STADIUMS = [
       concessions: 35,
       restrooms: 28,
       prayerRooms: ['Level 3 North'],
-      firstAid: ['East Plaza', 'West Plaza']
+      firstAid: ['East Plaza', 'West Plaza'],
     },
     transportation: {
       subway: ['SkyTrain – Stadium-Chinatown Station (2 min walk)'],
       bus: ['Multiple downtown routes'],
       parking: ['Impark Lot 88', 'Pacific Centre Parkade'],
-      rideshare: 'Rideshare drop-off: Beatty Street'
+      rideshare: 'Rideshare drop-off: Beatty Street',
     },
-    sections: { lower: '200s', club: 'Suite Level', upper: '300s' }
-  }
+    sections: { lower: '200s', club: 'Suite Level', upper: '300s' },
+  },
 ];
 
 const CROWD_DATA = {
   metlife: { currentOccupancy: 67800, capacity: 82500, hotspots: ['Gate C', 'Section 112', 'Main Concourse East'], waitTimes: { 'Gate A': 8, 'Gate B': 12, 'Gate C': 22, 'Gate D': 6, 'Gate E': 15, 'Gate F': 9 } },
-  atandt: { currentOccupancy: 71200, capacity: 80000, hotspots: ['Gate B', 'Section 108', 'Plaza Level West'], waitTimes: { 'Gate A': 5, 'Gate B': 18, 'Gate C': 11, 'Gate D': 14 } },
-  sofi: { currentOccupancy: 58900, capacity: 70240, hotspots: ['South Gate', 'Section 121'], waitTimes: { 'North': 7, 'South': 20, 'East': 9, 'West': 6 } },
-  azteca: { currentOccupancy: 81000, capacity: 87523, hotspots: ['Puerta Sur', 'Sección 115'], waitTimes: { 'Norte': 10, 'Sur': 25, 'Este': 12, 'Oeste': 8 } },
-  bcplace: { currentOccupancy: 49000, capacity: 54500, hotspots: ['Gate B', 'Section 220'], waitTimes: { 'Gate A': 9, 'Gate B': 16, 'Gate C': 7, 'Gate D': 11 } }
+  atandt:  { currentOccupancy: 71200, capacity: 80000, hotspots: ['Gate B', 'Section 108', 'Plaza Level West'],   waitTimes: { 'Gate A': 5, 'Gate B': 18, 'Gate C': 11, 'Gate D': 14 } },
+  sofi:    { currentOccupancy: 58900, capacity: 70240, hotspots: ['South Gate', 'Section 121'],                   waitTimes: { 'North': 7, 'South': 20, 'East': 9, 'West': 6 } },
+  azteca:  { currentOccupancy: 81000, capacity: 87523, hotspots: ['Puerta Sur', 'Sección 115'],                   waitTimes: { 'Norte': 10, 'Sur': 25, 'Este': 12, 'Oeste': 8 } },
+  bcplace: { currentOccupancy: 49000, capacity: 54500, hotspots: ['Gate B', 'Section 220'],                       waitTimes: { 'Gate A': 9, 'Gate B': 16, 'Gate C': 7, 'Gate D': 11 } },
 };
 
 const MATCHES = [
-  { id: 'm1', stadium: 'metlife', home: 'Brazil', away: 'Argentina', date: '2026-06-14', time: '20:00', group: 'Group C', matchday: 1 },
-  { id: 'm2', stadium: 'atandt', home: 'France', away: 'Germany', date: '2026-06-15', time: '17:00', group: 'Group D', matchday: 1 },
-  { id: 'm3', stadium: 'sofi', home: 'Spain', away: 'Portugal', date: '2026-06-16', time: '20:00', group: 'Group E', matchday: 1 },
-  { id: 'm4', stadium: 'azteca', home: 'Mexico', away: 'USA', date: '2026-06-17', time: '19:00', group: 'Group B', matchday: 1 },
-  { id: 'm5', stadium: 'bcplace', home: 'Canada', away: 'Morocco', date: '2026-06-18', time: '16:00', group: 'Group F', matchday: 1 }
+  { id: 'm1', stadium: 'metlife', home: 'Brazil',  away: 'Argentina', date: '2026-06-14', time: '20:00', group: 'Group C', matchday: 1 },
+  { id: 'm2', stadium: 'atandt',  home: 'France',  away: 'Germany',   date: '2026-06-15', time: '17:00', group: 'Group D', matchday: 1 },
+  { id: 'm3', stadium: 'sofi',    home: 'Spain',   away: 'Portugal',  date: '2026-06-16', time: '20:00', group: 'Group E', matchday: 1 },
+  { id: 'm4', stadium: 'azteca',  home: 'Mexico',  away: 'USA',       date: '2026-06-17', time: '19:00', group: 'Group B', matchday: 1 },
+  { id: 'm5', stadium: 'bcplace', home: 'Canada',  away: 'Morocco',   date: '2026-06-18', time: '16:00', group: 'Group F', matchday: 1 },
 ];
 
-module.exports = { STADIUMS, CROWD_DATA, MATCHES };
+// ── O(1) lookup maps — built once at startup, not on every request ─────────
+const STADIUM_MAP = new Map(STADIUMS.map(s => [s.id, s]));
+const MATCHES_BY_STADIUM = MATCHES.reduce((acc, m) => {
+  if (!acc[m.stadium]) acc[m.stadium] = [];
+  acc[m.stadium].push(m);
+  return acc;
+}, {});
+
+/**
+ * getStadium(id) — O(1) Map lookup instead of O(n) Array.find every request.
+ * @param {string} id
+ * @returns {object|undefined}
+ */
+function getStadium(id) {
+  return STADIUM_MAP.get(id);
+}
+
+/**
+ * getMatchesForStadium(id) — O(1) pre-grouped lookup.
+ * @param {string} id
+ * @returns {object[]}
+ */
+function getMatchesForStadium(id) {
+  return MATCHES_BY_STADIUM[id] || [];
+}
+
+/**
+ * calcOccupancy(crowd) — single shared utility, no repeated inline formula.
+ * @param {{ currentOccupancy: number, capacity: number }} crowd
+ * @returns {number} integer percentage 0-100
+ */
+function calcOccupancy(crowd) {
+  return Math.round((crowd.currentOccupancy / crowd.capacity) * 100);
+}
+
+/**
+ * fastestAndSlowestGate(waitTimes) — single O(n) pass instead of two sorts.
+ * @param {Record<string, number>} waitTimes
+ * @returns {{ fast: [string, number], slow: [string, number] }}
+ */
+function fastestAndSlowestGate(waitTimes) {
+  let fast = null;
+  let slow = null;
+  for (const entry of Object.entries(waitTimes)) {
+    if (!fast || entry[1] < fast[1]) fast = entry;
+    if (!slow || entry[1] > slow[1]) slow = entry;
+  }
+  return { fast, slow };
+}
+
+module.exports = {
+  STADIUMS,
+  CROWD_DATA,
+  MATCHES,
+  STADIUM_MAP,
+  getStadium,
+  getMatchesForStadium,
+  calcOccupancy,
+  fastestAndSlowestGate,
+};
