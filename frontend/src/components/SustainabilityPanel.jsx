@@ -83,6 +83,7 @@ export default function SustainabilityPanel({ stadiumId, stadium }) {
         {/* Custom Query */}
         <div className="flex gap-3 mb-4">
           <input
+            aria-label="Sustainability question"
             className="input flex-1"
             placeholder="Ask about sustainability initiatives, eco tips..."
             value={query}

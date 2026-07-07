@@ -266,7 +266,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
             <Send size={15} className="text-white" />
           </button>
         </div>
-        <div className="text-center text-[10px] text-gray-600 mt-1.5">
+        <div className="text-center text-[10px] text-gray-400 mt-1.5">
           Powered by Julep AI · FIFA World Cup 2026
         </div>
       </div>

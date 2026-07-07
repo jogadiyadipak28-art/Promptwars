@@ -89,7 +89,10 @@ function FeatureCard({ card, index, onSelect }) {
   return (
     <div
       ref={ref}
+      role="button"
+      tabIndex={0}
       onClick={() => onSelect(card.id)}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(card.id); } }}
       className={`feature-card group bg-gradient-to-br ${card.gradient} hover-glow
         transition-all duration-500 cursor-pointer
         ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}

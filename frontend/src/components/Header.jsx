@@ -16,7 +16,7 @@ export default function Header({ viewMode, setViewMode }) {
         ? 'bg-brand-darker/95 backdrop-blur-xl border-b border-brand-blue/15 shadow-2xl shadow-black/50'
         : 'bg-transparent'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <nav aria-label="Main navigation" className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
 
         <div className="flex items-center gap-3 group cursor-pointer">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300
@@ -69,7 +69,7 @@ export default function Header({ viewMode, setViewMode }) {
             </button>
           </div>
         </div>
-      </div>
+      </nav>
     </header>
   );
 }

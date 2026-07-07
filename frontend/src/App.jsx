@@ -78,6 +78,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-brand-darker">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Header viewMode={viewMode} setViewMode={setViewMode} onScrollToFeatures={scrollToApp} />
 
       {/* ── Hero ── */}
@@ -93,7 +94,7 @@ export default function App() {
       <FootballShowcase />
 
       {/* ── App section ── */}
-      <div ref={appRef} className="relative py-8 sm:py-12">
+      <div ref={appRef} id="main-content" role="main" className="relative py-8 sm:py-12">
         {/* Section glow */}
         <div className="absolute inset-0 bg-gradient-to-b from-brand-blue/5 via-brand-green/5 to-brand-pink/5 pointer-events-none" />
 
@@ -149,7 +150,7 @@ export default function App() {
               <span className="text-white font-bold text-lg">{activeTabData.label}</span>
               {selectedStadium && (
                 <>
-                  <ChevronRight size={14} className="text-gray-600" />
+                  <ChevronRight size={14} className="text-gray-400" />
                   <span className="text-gray-400 text-sm">{selectedStadium.name}</span>
                 </>
               )}
@@ -218,10 +219,10 @@ function Footer() {
               </div>
               <div>
                 <div className="font-black text-white text-lg">StadiumAI</div>
-                <div className="text-gray-500 text-xs">FIFA World Cup 2026</div>
+                <div className="text-gray-400 text-xs">FIFA World Cup 2026</div>
               </div>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-gray-400 text-sm leading-relaxed">
               The world's most advanced AI platform for stadium operations and fan experience.
             </p>
           </div>
@@ -254,7 +255,7 @@ function Footer() {
                 <div key={t.name} className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full" style={{ background: t.color }} />
                   <span className="text-gray-300 text-sm font-medium">{t.name}</span>
-                  <span className="text-gray-600 text-xs">· {t.desc}</span>
+                  <span className="text-gray-400 text-xs">· {t.desc}</span>
                 </div>
               ))}
             </div>
@@ -263,7 +264,7 @@ function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-white/5 gap-3">
-          <p className="text-gray-600 text-xs">
+          <p className="text-gray-400 text-xs">
             © 2026 StadiumAI · Built for FIFA World Cup 2026 · Generative AI Platform
           </p>
           <div className="flex items-center gap-2 text-brand-blue/50 text-xs">

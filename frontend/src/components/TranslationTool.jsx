@@ -98,7 +98,7 @@ export default function TranslationTool() {
             value={text}
             onChange={e => setText(e.target.value)}
           />
-          <div className="text-right text-xs text-gray-600 mt-1">{text.length} chars</div>
+          <div className="text-right text-xs text-gray-400 mt-1">{text.length} chars</div>
         </div>
 
         {error && <div className="bg-red-900/20 border border-red-800 text-red-400 text-sm rounded-xl px-4 py-3 mb-4">{error}</div>}

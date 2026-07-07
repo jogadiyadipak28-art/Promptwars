@@ -107,8 +107,9 @@ export default function AlertGenerator({ stadiumId, stadium }) {
         {/* Situation + Language */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
           <div className="sm:col-span-2">
-            <label className="text-xs text-gray-400 mb-1.5 block">Situation Description</label>
+            <label htmlFor="alert-situation" className="text-xs text-gray-400 mb-1.5 block">Situation Description</label>
             <textarea
+              id="alert-situation"
               className="input resize-none"
               rows={3}
               placeholder="Describe the situation that requires a PA announcement..."
@@ -117,8 +118,8 @@ export default function AlertGenerator({ stadiumId, stadium }) {
             />
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">Language</label>
-            <select className="select" value={language} onChange={e => setLanguage(e.target.value)}>
+            <label htmlFor="alert-language" className="text-xs text-gray-400 mb-1.5 block">Language</label>
+            <select id="alert-language" className="select" value={language} onChange={e => setLanguage(e.target.value)}>
               {LANGUAGES.map(l => <option key={l}>{l}</option>)}
             </select>
           </div>
@@ -168,7 +169,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
                 <div key={i} className="flex items-start gap-3 text-xs bg-gray-800 rounded-xl px-3 py-2">
                   <span className={`mt-0.5 ${conf.color}`}>●</span>
                   <div className="flex-1 text-gray-300">{h.alert}</div>
-                  <span className="text-gray-600 whitespace-nowrap">{h.time}</span>
+                  <span className="text-gray-400 whitespace-nowrap">{h.time}</span>
                 </div>
               );
             })}
