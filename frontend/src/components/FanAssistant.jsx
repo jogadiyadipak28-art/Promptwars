@@ -15,6 +15,9 @@ const QUICK_PROMPTS = [
   { id: 'eco',       text: '🌿 How can I be eco-friendly today?' },
 ];
 
+const OPTION_STYLE = { background: '#1f2937', color: '#fff' };
+const SELECT_DARK  = { colorScheme: 'dark' };
+
 const INITIAL_MESSAGE = {
   role: 'assistant',
   content:
@@ -98,12 +101,10 @@ export default function FanAssistant({ stadiumId }) {
             value={language}
             onChange={e => setLanguage(e.target.value)}
             className="select text-sm py-1.5 w-auto"
-            style={{ colorScheme: 'dark' }}
+            style={SELECT_DARK}
           >
             {LANGUAGES.map(l => (
-              <option key={l} value={l} style={{ background: '#1f2937', color: '#fff' }}>
-                {l}
-              </option>
+              <option key={l} value={l} style={OPTION_STYLE}>{l}</option>
             ))}
           </select>
           <button

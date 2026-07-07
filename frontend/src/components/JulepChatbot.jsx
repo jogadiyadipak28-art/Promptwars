@@ -68,6 +68,9 @@ function Message({ msg }) {
 
 Message.propTypes = { msg: messagePropType.isRequired };
 
+const OPTION_STYLE = { background: '#1f2937', color: '#fff' };
+const SELECT_DARK  = { colorScheme: 'dark' };
+
 export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
   const [messages, setMessages] = useState([
     {
@@ -191,12 +194,10 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
             value={language}
             onChange={e => setLanguage(e.target.value)}
             className="text-xs bg-gray-800 border border-gray-700 text-white rounded-lg px-2 py-1 focus:outline-none focus:border-[#003DA5]"
-            style={{ colorScheme: 'dark' }}
+            style={SELECT_DARK}
           >
             {LANGUAGES.map(l => (
-              <option key={l} value={l} style={{ background: '#1f2937', color: '#fff' }}>
-                {l}
-              </option>
+              <option key={l} value={l} style={OPTION_STYLE}>{l}</option>
             ))}
           </select>
           <button
