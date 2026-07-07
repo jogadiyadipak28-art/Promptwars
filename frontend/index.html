@@ -3,15 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FIFA WC 2026 · StadiumAI</title>
-    <meta name="description" content="GenAI-powered stadium operations and fan experience platform for FIFA World Cup 2026" />
+    <title>StadiumAI — FIFA World Cup 2026</title>
+    <meta name="description" content="GenAI-powered stadium navigation, crowd intelligence, multilingual assistance and operations for FIFA World Cup 2026." />
     <meta name="theme-color" content="#081420" />
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content="StadiumAI — FIFA World Cup 2026" />
+    <meta property="og:description" content="Real-time AI platform for stadium operations and fan experience." />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/images/football.svg" />
+
+    <!-- Preconnect for Pexels CDN (images) — avoids DNS lookup latency -->
+    <link rel="preconnect" href="https://images.pexels.com" />
+    <link rel="dns-prefetch" href="https://images.pexels.com" />
+    <link rel="dns-prefetch" href="https://flagcdn.com" />
+
+    <!--
+      Fonts loaded with display=swap and media trick so they don't block rendering.
+      The onload swaps media back to 'all' once the font is ready.
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
-    <link rel="icon" type="image/svg+xml" href="/images/football.svg" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      />
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

@@ -56,6 +56,8 @@ export default function CrowdDashboard({ stadiumId }) {
           <button
             key={v.id}
             onClick={() => setSelected(selected === v.id ? null : v.id)}
+            aria-pressed={selected === v.id}
+            aria-label={`${v.name} — ${v.occupancyPct}% occupancy. Click to ${selected === v.id ? 'deselect' : 'view AI analysis'}`}
             className={`card text-left transition-all hover:border-gray-600 ${
               selected === v.id ? 'border-[#003DA5] ring-1 ring-[#003DA5]/50' : ''
             }`}

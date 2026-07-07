@@ -53,7 +53,7 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
   if (!stadiums?.length) return null;
 
   return (
-    <section className="py-16 relative">
+    <section className="py-16 relative" aria-label="Stadium selection">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-end justify-between mb-8">
           <div>
@@ -82,6 +82,8 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
                 onClick={() => onChange(s)}
                 onMouseEnter={() => setHovered(s.id)}
                 onMouseLeave={() => setHovered(null)}
+                aria-pressed={isSelected}
+                aria-label={`${s.name}, ${s.city}, capacity ${s.capacity.toLocaleString()}, ${occ}% occupied${isSelected ? ', currently selected' : ''}`}
                 className={`relative overflow-hidden rounded-2xl border text-left transition-all duration-300 group
                   ${isSelected
                     ? 'border-brand-green ring-2 ring-brand-green/30 scale-[1.02]'
