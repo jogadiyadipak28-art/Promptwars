@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   ChevronDown, Zap, Shield, Globe2, Users,
   Trophy, Calendar, Building2, Globe, UserRound,
@@ -216,7 +217,7 @@ export default function HeroSection({ onScrollToApp }) {
               ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
           >
             GenAI-powered navigation, crowd management, multilingual assistance,
-            and real-time operations for the world's biggest sporting event.
+            and real-time operations for the world&apos;s biggest sporting event.
           </p>
 
           {/* CTAs */}
@@ -314,3 +315,12 @@ export default function HeroSection({ onScrollToApp }) {
     </section>
   );
 }
+
+AnimatedCounter.propTypes = {
+  target:   PropTypes.string.isRequired,
+  duration: PropTypes.number,
+};
+
+HeroSection.propTypes = {
+  onScrollToApp: PropTypes.func.isRequired,
+};

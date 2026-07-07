@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Trophy, Globe2, Users, Flame } from 'lucide-react';
 import SafeImage from './SafeImage';
 import { SHOWCASE_IMAGES } from '../assets/images';
@@ -44,6 +45,15 @@ function useInView(threshold = 0.15) {
   }, [threshold]);
   return [ref, inView];
 }
+
+const panelShape = PropTypes.shape({
+  key:   PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  sub:   PropTypes.string.isRequired,
+  icon:  PropTypes.elementType.isRequired,
+  color: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+});
 
 /** Individual panel — component so hooks are called at the top level */
 function ShowcasePanel({ panel, index }) {
@@ -92,6 +102,11 @@ function ShowcasePanel({ panel, index }) {
   );
 }
 
+ShowcasePanel.propTypes = {
+  panel: panelShape.isRequired,
+  index: PropTypes.number.isRequired,
+};
+
 export default function FootballShowcase() {
   const [titleRef, titleInView] = useInView(0.2);
 
@@ -111,7 +126,7 @@ export default function FootballShowcase() {
             <span className="text-brand-pink text-sm font-semibold">FIFA World Cup 2026</span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">
-            The World's Biggest<br />
+            The World&apos;s Biggest<br />
             <span className="shimmer-text">Football Festival</span>
           </h2>
           <p className="text-gray-300 text-lg max-w-xl mx-auto">

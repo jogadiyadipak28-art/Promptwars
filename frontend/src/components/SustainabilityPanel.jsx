@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Leaf, Loader, Recycle, Wind, Droplets, Zap } from 'lucide-react';
 import { sustainabilityAdvice } from '../api/client';
 
@@ -18,7 +19,7 @@ const STATS = [
   { icon: Wind, label: 'CO₂ Offset', value: '18K ton', color: 'text-teal-400' }
 ];
 
-export default function SustainabilityPanel({ stadiumId, stadium }) {
+export default function SustainabilityPanel({ stadiumId }) {
   const [query, setQuery] = useState('');
   const [advice, setAdvice] = useState('');
   const [loading, setLoading] = useState(false);
@@ -116,3 +117,7 @@ export default function SustainabilityPanel({ stadiumId, stadium }) {
     </div>
   );
 }
+
+SustainabilityPanel.propTypes = {
+  stadiumId: PropTypes.string,
+};

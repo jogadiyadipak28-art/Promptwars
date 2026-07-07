@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const FALLBACK =
   'https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop';
@@ -33,3 +34,11 @@ export default function SafeImage({
     />
   );
 }
+
+SafeImage.propTypes = {
+  src:       PropTypes.string.isRequired,
+  alt:       PropTypes.string,
+  className: PropTypes.string,
+  style:     PropTypes.object,
+  fallback:  PropTypes.string,
+};

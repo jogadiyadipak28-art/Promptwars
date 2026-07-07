@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Bot, Map, Users, Globe, Zap, Leaf, ArrowRight, Sparkles } from 'lucide-react';
 import SafeImage from './SafeImage';
 import { FEATURE_IMAGES } from '../assets/images';
@@ -138,6 +139,22 @@ function FeatureCard({ card, index, onSelect }) {
   );
 }
 
+FeatureCard.propTypes = {
+  card: PropTypes.shape({
+    id:       PropTypes.string.isRequired,
+    icon:     PropTypes.elementType.isRequired,
+    title:    PropTypes.string.isRequired,
+    subtitle: PropTypes.string,
+    desc:     PropTypes.string,
+    gradient: PropTypes.string,
+    accent:   PropTypes.string,
+    image:    PropTypes.string,
+    tag:      PropTypes.string,
+  }).isRequired,
+  index:    PropTypes.number.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
+
 export default function FeaturesSection({ onSelectFeature }) {
   const [titleRef, titleInView] = useInView(0.2);
 
@@ -172,3 +189,7 @@ export default function FeaturesSection({ onSelectFeature }) {
     </section>
   );
 }
+
+FeaturesSection.propTypes = {
+  onSelectFeature: PropTypes.func.isRequired,
+};

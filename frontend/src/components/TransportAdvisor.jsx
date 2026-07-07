@@ -1,13 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Zap, Users, Accessibility, Loader, Train, Bus, Car } from 'lucide-react';
+import { Zap, Users, Accessibility, Loader } from 'lucide-react';
 import { transportRecommend } from '../api/client';
 
 const LANGUAGES = ['English', 'Spanish', 'French', 'Portuguese', 'Arabic', 'German'];
-
-const TRANSPORT_ICONS = {
-  subway: Train, bus: Bus, parking: Car, rideshare: Car
-};
 
 export default function TransportAdvisor({ stadiumId, stadium }) {
   const [origin, setOrigin] = useState('');
@@ -48,7 +44,6 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
         {stadium?.transportation && (
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
             {Object.entries(stadium.transportation).map(([mode, info]) => {
-              const Icon = TRANSPORT_ICONS[mode] || Zap;
               const labels = { subway: '🚇 Metro/Rail', bus: '🚌 Bus', parking: '🅿️ Parking', rideshare: '🚗 Rideshare' };
               return (
                 <div key={mode} className="bg-gray-800 rounded-xl p-3 border border-gray-700">

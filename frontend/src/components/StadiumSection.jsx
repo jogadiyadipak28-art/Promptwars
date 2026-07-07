@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { MapPin, Users, ChevronRight, Trophy } from 'lucide-react';
 import SafeImage from './SafeImage';
 import { STADIUM_IMAGES, FLAGS } from '../assets/images';
@@ -133,8 +134,8 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
               <div className="w-2 h-2 rounded-full bg-brand-pink animate-pulse" />
               <span className="text-xs text-brand-pink font-bold uppercase tracking-wider">Upcoming</span>
             </div>
-            {MATCHES.map((m, i) => (
-              <div key={i} className="flex items-center gap-3 flex-shrink-0 bg-brand-green/5 rounded-xl px-4 py-2 border border-brand-green/15 hover:border-brand-green/30 transition-colors cursor-default">
+            {MATCHES.map((m) => (
+              <div key={`${m.home}-${m.away}-${m.date}`} className="flex items-center gap-3 flex-shrink-0 bg-brand-green/5 rounded-xl px-4 py-2 border border-brand-green/15 hover:border-brand-green/30 transition-colors cursor-default">
                 <span className="text-white font-bold text-sm">{m.home}</span>
                 <span className="text-brand-red text-xs font-black">VS</span>
                 <span className="text-white font-bold text-sm">{m.away}</span>
@@ -149,3 +150,18 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
     </section>
   );
 }
+
+OccupancyBar.propTypes = { pct: PropTypes.number.isRequired };
+FlagBadge.propTypes    = { country: PropTypes.string };
+
+StadiumSection.propTypes = {
+  stadiums: PropTypes.arrayOf(PropTypes.shape({
+    id:       PropTypes.string.isRequired,
+    name:     PropTypes.string.isRequired,
+    city:     PropTypes.string,
+    country:  PropTypes.string,
+    capacity: PropTypes.number,
+  })),
+  selected: PropTypes.shape({ id: PropTypes.string }),
+  onChange: PropTypes.func.isRequired,
+};

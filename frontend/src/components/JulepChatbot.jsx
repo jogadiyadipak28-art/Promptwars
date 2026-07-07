@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Send, Bot, User, RefreshCw, Sparkles, Wifi, WifiOff, ChevronDown, X } from 'lucide-react';
 import { chatbotMessage, chatbotReset, chatbotStatus } from '../api/client';
 
@@ -35,6 +36,13 @@ function TypingDots() {
   );
 }
 
+/** @type {import('react')} */
+const messagePropType = PropTypes.shape({
+  role:      PropTypes.string.isRequired,
+  content:   PropTypes.string.isRequired,
+  timestamp: PropTypes.string,
+});
+
 function Message({ msg }) {
   const isBot = msg.role === 'assistant';
   return (
@@ -61,6 +69,8 @@ function Message({ msg }) {
     </div>
   );
 }
+
+Message.propTypes = { msg: messagePropType.isRequired };
 
 export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
   const [messages, setMessages] = useState([
@@ -318,3 +328,9 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
     </div>
   );
 }
+
+JulepChatbot.propTypes = {
+  stadiumId: PropTypes.string,
+  stadium:   PropTypes.shape({ name: PropTypes.string, city: PropTypes.string }),
+  floating:  PropTypes.bool,
+};

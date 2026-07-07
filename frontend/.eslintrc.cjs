@@ -19,6 +19,8 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     // Prop-types encouraged but not enforced at error level
     'react/prop-types': 'warn',
+    // Unescaped entities — warn only, JSX text apostrophes are common and readable
+    'react/no-unescaped-entities': 'warn',
     // Hooks rules
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

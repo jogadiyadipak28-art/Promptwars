@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Trophy, Users, Cpu, Zap, UserRound } from 'lucide-react';
 
 export default function Header({ viewMode, setViewMode }) {
@@ -104,3 +105,8 @@ export default function Header({ viewMode, setViewMode }) {
     </header>
   );
 }
+
+Header.propTypes = {
+  viewMode:    PropTypes.oneOf(['fan', 'ops']).isRequired,
+  setViewMode: PropTypes.func.isRequired,
+};
