@@ -78,6 +78,7 @@ export default function TranslationTool() {
           </div>
           <ArrowRight size={20} className="text-gray-500 flex-shrink-0" />
           <select
+            aria-label="Target language"
             className="select flex-1"
             value={targetLanguage}
             onChange={e => setTargetLanguage(e.target.value)}
@@ -88,8 +89,9 @@ export default function TranslationTool() {
 
         {/* Text Input */}
         <div className="mb-4">
-          <label className="text-xs text-gray-400 mb-1.5 block">Text to Translate</label>
+          <label htmlFor="trans-text" className="text-xs text-gray-400 mb-1.5 block">Text to Translate</label>
           <textarea
+            id="trans-text"
             className="input resize-none"
             rows={4}
             placeholder="Enter stadium announcement, sign text, or any message..."

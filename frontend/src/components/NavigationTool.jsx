@@ -74,30 +74,30 @@ export default function NavigationTool({ stadiumId, stadium }) {
         {/* Form */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">📍 From</label>
-            <input className="input" placeholder="e.g. Gate A, Section 112, Parking Lot" value={from} onChange={e => setFrom(e.target.value)} />
+            <label htmlFor="nav-from" className="text-xs text-gray-400 mb-1.5 block">📍 From</label>
+            <input id="nav-from" className="input" placeholder="e.g. Gate A, Section 112, Parking Lot" value={from} onChange={e => setFrom(e.target.value)} />
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">🎯 To</label>
-            <input className="input" placeholder="e.g. Section 301, Medical Station, Exit" value={to} onChange={e => setTo(e.target.value)} />
+            <label htmlFor="nav-to" className="text-xs text-gray-400 mb-1.5 block">🎯 To</label>
+            <input id="nav-to" className="input" placeholder="e.g. Section 301, Medical Station, Exit" value={to} onChange={e => setTo(e.target.value)} />
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-4 mb-5">
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">🌐 Language</label>
-            <select className="select w-36" value={language} onChange={e => setLanguage(e.target.value)}>
+            <label htmlFor="nav-lang" className="text-xs text-gray-400 mb-1.5 block">🌐 Language</label>
+            <select id="nav-lang" className="select w-36" value={language} onChange={e => setLanguage(e.target.value)}>
               {LANGUAGES.map(l => <option key={l}>{l}</option>)}
             </select>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer mt-4">
+          <label htmlFor="nav-acc" className="flex items-center gap-2 cursor-pointer mt-4">
             <div className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-700'} relative`}>
               <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${accessibility ? 'left-5' : 'left-1'}`} />
             </div>
             <span className="text-sm text-gray-300 flex items-center gap-1.5">
               <Accessibility size={14} className="text-[#00A8E0]" /> Accessibility Route
             </span>
-            <input type="checkbox" className="hidden" checked={accessibility} onChange={e => setAccessibility(e.target.checked)} />
+            <input id="nav-acc" type="checkbox" className="hidden" checked={accessibility} onChange={e => setAccessibility(e.target.checked)} />
           </label>
         </div>
 

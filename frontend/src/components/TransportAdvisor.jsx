@@ -64,21 +64,22 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
         {/* Form */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">📍 Your Origin</label>
-            <input className="input" placeholder="e.g. Downtown Hotel, Airport, Times Square" value={origin} onChange={e => setOrigin(e.target.value)} />
+            <label htmlFor="trans-origin" className="text-xs text-gray-400 mb-1.5 block">📍 Your Origin</label>
+            <input id="trans-origin" className="input" placeholder="e.g. Downtown Hotel, Airport, Times Square" value={origin} onChange={e => setOrigin(e.target.value)} />
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">⏰ Desired Arrival Time</label>
-            <input className="input" type="time" value={arrivalTime} onChange={e => setArrivalTime(e.target.value)} />
+            <label htmlFor="trans-time" className="text-xs text-gray-400 mb-1.5 block">⏰ Desired Arrival Time</label>
+            <input id="trans-time" className="input" type="time" value={arrivalTime} onChange={e => setArrivalTime(e.target.value)} />
           </div>
         </div>
 
         <div className="flex flex-wrap items-end gap-4 mb-5">
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">
+            <label htmlFor="trans-group" className="text-xs text-gray-400 mb-1.5 block">
               <Users size={12} className="inline mr-1" />Group Size
             </label>
             <input
+              id="trans-group"
               className="input w-24"
               type="number"
               min={1}
@@ -88,19 +89,19 @@ export default function TransportAdvisor({ stadiumId, stadium }) {
             />
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">🌐 Language</label>
-            <select className="select w-36" value={language} onChange={e => setLanguage(e.target.value)}>
+            <label htmlFor="trans-lang" className="text-xs text-gray-400 mb-1.5 block">🌐 Language</label>
+            <select id="trans-lang" className="select w-36" value={language} onChange={e => setLanguage(e.target.value)}>
               {LANGUAGES.map(l => <option key={l}>{l}</option>)}
             </select>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer pb-1">
+          <label htmlFor="trans-acc" className="flex items-center gap-2 cursor-pointer pb-1">
             <div className={`w-10 h-6 rounded-full transition-all ${accessibility ? 'bg-[#003DA5]' : 'bg-gray-700'} relative`}>
               <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${accessibility ? 'left-5' : 'left-1'}`} />
             </div>
             <span className="text-sm text-gray-300 flex items-center gap-1.5">
               <Accessibility size={14} className="text-[#00A8E0]" /> Accessibility Needs
             </span>
-            <input type="checkbox" className="hidden" checked={accessibility} onChange={e => setAccessibility(e.target.checked)} />
+            <input id="trans-acc" type="checkbox" className="hidden" checked={accessibility} onChange={e => setAccessibility(e.target.checked)} />
           </label>
         </div>
 

@@ -98,13 +98,14 @@ export default function FanAssistant({ stadiumId }) {
         </div>
         <div className="flex items-center gap-2">
           <select
+            aria-label="Language"
             value={language}
             onChange={e => setLanguage(e.target.value)}
             className="select text-sm py-1.5 w-auto"
           >
             {LANGUAGES.map(l => <option key={l}>{l}</option>)}
           </select>
-          <button onClick={reset} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all">
+          <button aria-label="Reset conversation" onClick={reset} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all">
             <RefreshCw size={16} />
           </button>
         </div>
@@ -150,6 +151,7 @@ export default function FanAssistant({ stadiumId }) {
       {/* Input */}
       <div className="flex gap-2">
         <input
+          aria-label="Message"
           className="input flex-1"
           placeholder="Ask anything about the stadium..."
           value={input}
@@ -158,6 +160,7 @@ export default function FanAssistant({ stadiumId }) {
           disabled={loading}
         />
         <button
+          aria-label="Send message"
           onClick={() => sendMessage()}
           disabled={!input.trim() || loading}
           className="btn-primary px-4"

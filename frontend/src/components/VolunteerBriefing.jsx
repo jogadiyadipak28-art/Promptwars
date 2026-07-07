@@ -60,10 +60,10 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           {/* Role */}
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block flex items-center gap-1">
+            <label htmlFor="vol-role" className="text-xs text-gray-400 mb-1.5 block flex items-center gap-1">
               <User size={12} /> Volunteer Role
             </label>
-            <select className="select" value={role} onChange={e => setRole(e.target.value)}>
+            <select id="vol-role" className="select" value={role} onChange={e => setRole(e.target.value)}>
               <option value="">Select your role...</option>
               {ROLES.map(r => <option key={r}>{r}</option>)}
             </select>
@@ -71,10 +71,10 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
 
           {/* Shift */}
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block flex items-center gap-1">
+            <label htmlFor="vol-shift" className="text-xs text-gray-400 mb-1.5 block flex items-center gap-1">
               <Clock size={12} /> Shift
             </label>
-            <select className="select" value={shiftTime} onChange={e => setShiftTime(e.target.value)}>
+            <select id="vol-shift" className="select" value={shiftTime} onChange={e => setShiftTime(e.target.value)}>
               <option value="">Select shift...</option>
               {SHIFTS.map(s => <option key={s}>{s}</option>)}
             </select>
@@ -82,8 +82,8 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
 
           {/* Language */}
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">🌐 Briefing Language</label>
-            <select className="select" value={language} onChange={e => setLanguage(e.target.value)}>
+            <label htmlFor="vol-lang" className="text-xs text-gray-400 mb-1.5 block">🌐 Briefing Language</label>
+            <select id="vol-lang" className="select" value={language} onChange={e => setLanguage(e.target.value)}>
               {LANGUAGES.map(l => <option key={l}>{l}</option>)}
             </select>
           </div>

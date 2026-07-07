@@ -46,6 +46,7 @@ export default function Header({ viewMode, setViewMode }) {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-0.5 bg-white/5 border border-brand-blue/15 p-1 rounded-xl">
             <button
+              aria-label="Fan view mode"
               onClick={() => setViewMode('fan')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 viewMode === 'fan'
@@ -56,6 +57,7 @@ export default function Header({ viewMode, setViewMode }) {
               <UserRound size={13} /> <span className="hidden sm:inline">Fan</span>
             </button>
             <button
+              aria-label="Ops view mode"
               onClick={() => setViewMode('ops')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 viewMode === 'ops'

@@ -181,6 +181,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
 
         <div className="flex items-center gap-1.5">
           <select
+            aria-label="Language"
             value={language}
             onChange={e => setLanguage(e.target.value)}
             className="text-xs bg-gray-800 border border-gray-700 text-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:border-[#003DA5]"
@@ -188,6 +189,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
             {LANGUAGES.map(l => <option key={l}>{l}</option>)}
           </select>
           <button
+            aria-label="New conversation"
             onClick={resetChat}
             title="New conversation"
             className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all"
@@ -196,6 +198,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
           </button>
           {floating && (
             <button
+              aria-label="Minimize chat"
               onClick={() => setIsOpen(false)}
               className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all"
             >
@@ -244,6 +247,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
       <div className="px-4 pb-4 flex-shrink-0">
         <div className="flex gap-2 bg-gray-800 border border-gray-700 rounded-xl p-1 focus-within:border-[#003DA5] transition-all">
           <input
+            aria-label="Message"
             ref={inputRef}
             className="flex-1 bg-transparent text-white text-sm placeholder-gray-500 px-3 py-2 focus:outline-none"
             placeholder="Ask me anything..."
@@ -254,6 +258,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
             maxLength={500}
           />
           <button
+            aria-label="Send message"
             onClick={() => sendMessage()}
             disabled={!input.trim() || loading}
             className="w-9 h-9 rounded-lg bg-[#003DA5] hover:bg-[#0051CC] disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center transition-all flex-shrink-0"
@@ -281,6 +286,7 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
 
         {/* Floating trigger button */}
         <button
+          aria-label={isOpen ? "Close chat" : "Open chat"}
           onClick={() => setIsOpen(o => !o)}
           className="fixed bottom-4 right-4 w-14 h-14 bg-gradient-to-br from-[#003DA5] to-[#00A8E0] rounded-full shadow-xl flex items-center justify-center z-50 hover:scale-105 transition-transform"
           title="Chat with StadiumAI"
