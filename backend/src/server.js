@@ -52,8 +52,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// Only listen on a port in local development (not on Vercel serverless)
-if (!process.env.VERCEL) {
+// Only listen on a port in local development (not on Vercel serverless, not in tests)
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => console.log(`FIFA WC 2026 API running on http://localhost:${PORT}`));
 }
 
