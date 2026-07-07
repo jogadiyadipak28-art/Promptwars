@@ -20,12 +20,45 @@ const {
   OCCUPANCY_THRESHOLDS, getAnalysisRiskLabel, getVolunteerRiskLevel,
 } = require('../constants');
 
+// Simple in-memory cache for static stadium context strings
+const stadiumContextCache = new Map();
+
+// Memoization cache for expensive calculations
+const occupancyCache = new Map();
+const gateAnalysisCache = new Map();
+
+/**
+ * Memoized version of calcOccupancy to avoid repeated calculations
+ */
+function getCachedOccupancy(crowd) {
+  const cacheKey = `${crowd.currentOccupancy}_${crowd.capacity}`;
+  if (occupancyCache.has(cacheKey)) {
+    return occupancyCache.get(cacheKey);
+  }
+  const result = calcOccupancy(crowd);
+  occupancyCache.set(cacheKey, result);
+  return result;
+}
+
+/**
+ * Memoized version of fastestAndSlowestGate to avoid repeated calculations
+ */
+function getCachedGateAnalysis(waitTimes) {
+  const cacheKey = JSON.stringify(waitTimes);
+  if (gateAnalysisCache.has(cacheKey)) {
+    return gateAnalysisCache.get(cacheKey);
+  }
+  const result = fastestAndSlowestGate(waitTimes);
+  gateAnalysisCache.set(cacheKey, result);
+  return result;
+}
+
 const router = express.Router();
 
 // ─── Helper: build stadium context string for AI prompts ─────────────────────
 /**
  * Builds a comprehensive context string for AI prompts containing stadium details,
- * crowd information, and operational data.
+ * crowd information, and operational data. Uses caching for static stadium data.
  *
  * @param {import('../data/stadiums').Stadium} stadium - Stadium object with facilities and transportation
  * @param {import('../data/stadiums').CrowdData|null} crowd - Current crowd data or null
@@ -35,19 +68,30 @@ const router = express.Router();
  */
 function buildStadiumContext(stadium, crowd, occupancyPct, language) {
   if (!stadium) return '';
-  const facilities = stadium.facilities || {};
-  return (
-    `Current Stadium: ${stadium.name}, ${stadium.city}\n` +
-    `Capacity: ${stadium.capacity.toLocaleString()} | Current Occupancy: ${occupancyPct}%\n` +
-    `Gates: ${(stadium.gates || []).join(', ')}\n` +
-    `Accessible Entrances: ${(facilities.accessibleEntrances || []).join(', ')}\n` +
-    `Medical Stations: ${(facilities.medicalStations || []).join(', ')}\n` +
-    `Family Zones: ${(facilities.familyZones || []).join(', ')}\n` +
-    `Prayer Rooms: ${(facilities.prayerRooms || []).join(', ')}\n` +
-    `Transport: ${JSON.stringify(stadium.transportation)}\n` +
+  
+  // Cache key for static stadium data (excludes dynamic crowd data)
+  const staticCacheKey = `${stadium.id}_${language}`;
+  let staticContext = stadiumContextCache.get(staticCacheKey);
+  
+  if (!staticContext) {
+    const facilities = stadium.facilities || {};
+    staticContext =
+      `Current Stadium: ${stadium.name}, ${stadium.city}\n` +
+      `Capacity: ${stadium.capacity.toLocaleString()}\n` +
+      `Gates: ${(stadium.gates || []).join(', ')}\n` +
+      `Accessible Entrances: ${(facilities.accessibleEntrances || []).join(', ')}\n` +
+      `Medical Stations: ${(facilities.medicalStations || []).join(', ')}\n` +
+      `Family Zones: ${(facilities.familyZones || []).join(', ')}\n` +
+      `Prayer Rooms: ${(facilities.prayerRooms || []).join(', ')}\n` +
+      `Transport: ${JSON.stringify(stadium.transportation)}\n`;
+    stadiumContextCache.set(staticCacheKey, staticContext);
+  }
+  
+  // Append dynamic data (occupancy and crowd hotspots)
+  return staticContext +
+    `Current Occupancy: ${occupancyPct}%\n` +
     (crowd ? `Hot Spots (congested areas): ${(crowd.hotspots || []).join(', ')}\n` : '') +
-    `\nAlways respond in ${language}.`
-  );
+    `\nAlways respond in ${language}.`;
 }
 
 // ─── FAN ASSISTANT ────────────────────────────────────────────────────────────
@@ -60,7 +104,7 @@ router.post(
     const { message, language = DEFAULTS.LANGUAGE, conversationHistory } = req.body;
     const stadium      = req.stadium;
     const crowd        = stadium ? CROWD_DATA[stadium.id] : null;
-    const occupancyPct = crowd ? calcOccupancy(crowd) : null;
+    const occupancyPct = crowd ? getCachedOccupancy(crowd) : null;
 
     const systemPrompt =
       `You are StadiumAI, the official AI assistant for FIFA World Cup 2026.\n` +
@@ -137,8 +181,8 @@ router.post(
   asyncHandler(async (req, res) => {
     const stadium      = req.stadium;
     const crowd        = CROWD_DATA[stadium.id];
-    const occupancyPct = calcOccupancy(crowd);
-    const { fast: fastGate, slow: slowGate } = fastestAndSlowestGate(crowd.waitTimes || {});
+    const occupancyPct = getCachedOccupancy(crowd);
+    const { fast: fastGate, slow: slowGate } = getCachedGateAnalysis(crowd.waitTimes || {});
 
     const waitTimesStr = Object.entries(crowd.waitTimes || {})
       .map(([gate, mins]) => `${gate}: ${mins} min`)
@@ -288,7 +332,7 @@ router.post(
     const { role, shiftTime = DEFAULTS.SHIFT_TIME, language = DEFAULTS.LANGUAGE } = req.body;
     const stadium      = req.stadium;
     const crowd        = CROWD_DATA[stadium.id];
-    const occupancyPct = calcOccupancy(crowd);
+    const occupancyPct = getCachedOccupancy(crowd);
 
     const facilities = stadium.facilities || {};
     const brief = await chat(
@@ -332,7 +376,7 @@ router.post(
     const { timeFrame = '1h', focusAreas = ['crowd', 'staffing', 'resources'] } = req.body;
     const stadium = req.stadium;
     const crowd = CROWD_DATA[stadium.id];
-    const occupancyPct = calcOccupancy(crowd);
+    const occupancyPct = getCachedOccupancy(crowd);
 
     const intelligence = await chat(
       'You are an AI operational intelligence analyst for FIFA World Cup 2026. Provide data-driven insights for stadium operations.',
@@ -351,7 +395,7 @@ router.post(
 
     // Smart-engine fallback
     const riskLevel = getAnalysisRiskLabel(occupancyPct);
-    const { fast: fastGate } = fastestAndSlowestGate(crowd.waitTimes || {});
+    const { fast: fastGate } = getCachedGateAnalysis(crowd.waitTimes || {});
     const fastGateName = fastGate ? fastGate[0] : 'Unknown';
 
     res.json({
@@ -388,7 +432,7 @@ router.post(
     const { emergencyType, severity = 'medium', affectedArea = 'general', language = DEFAULTS.LANGUAGE } = req.body;
     const stadium = req.stadium;
     const crowd = CROWD_DATA[stadium.id];
-    const occupancyPct = calcOccupancy(crowd);
+    const occupancyPct = getCachedOccupancy(crowd);
 
     const response = await chat(
       'You are an AI emergency response coordinator for FIFA World Cup 2026. Provide clear, actionable emergency protocols.',
@@ -446,7 +490,7 @@ router.post(
     const { resourceType = 'all', optimizationGoal = 'efficiency', language = DEFAULTS.LANGUAGE } = req.body;
     const stadium = req.stadium;
     const crowd = CROWD_DATA[stadium.id];
-    const occupancyPct = calcOccupancy(crowd);
+    const occupancyPct = getCachedOccupancy(crowd);
 
     const optimization = await chat(
       'You are an AI resource optimization specialist for FIFA World Cup 2026. Maximize efficiency and minimize waste.',
