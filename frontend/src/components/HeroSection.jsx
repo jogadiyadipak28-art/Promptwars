@@ -160,9 +160,9 @@ export default function HeroSection({ onScrollToApp }) {
           </div>
 
           <h1 className={`text-5xl sm:text-6xl lg:text-7xl font-black leading-[0.95] tracking-tight mb-4 transition-all duration-700 delay-100 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-            <span className="text-white block">The Future of</span>
+            <span className="text-gray-900 block">The Future of</span>
             <span className="shimmer-text block">Stadium AI</span>
-            <span className="text-white block">is Here.</span>
+            <span className="text-gray-900 block">is Here.</span>
           </h1>
 
           <p className={`text-brand-blue/80 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl transition-all duration-700 delay-200 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
@@ -180,7 +180,7 @@ export default function HeroSection({ onScrollToApp }) {
             </button>
             <button
               onClick={onScrollToApp}
-              className="flex items-center gap-2 text-white text-base font-semibold bg-brand-green/10 hover:bg-brand-green/20 border border-brand-green/30 px-7 py-3.5 rounded-2xl transition-all duration-200 hover:scale-105"
+              className="flex items-center gap-2 text-gray-900 text-base font-semibold bg-brand-green/10 hover:bg-brand-green/20 border border-brand-green/30 px-7 py-3.5 rounded-2xl transition-all duration-200 hover:scale-105"
             >
               <Zap size={16} className="text-brand-green" /> See Features
             </button>
@@ -216,7 +216,7 @@ export default function HeroSection({ onScrollToApp }) {
                       <Icon size={14} style={{ color: s.color }} />
                     </div>
                   </div>
-                  <div className="text-2xl font-black text-white leading-none">
+                  <div className="text-2xl font-black text-gray-900 leading-none">
                     <AnimatedCounter target={s.value} />
                   </div>
                   <div className="text-brand-blue/60 text-xs mt-0.5 font-medium">{s.label}</div>

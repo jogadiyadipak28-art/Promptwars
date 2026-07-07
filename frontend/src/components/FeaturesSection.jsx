@@ -121,7 +121,7 @@ function FeatureCard({ card, index, onSelect }) {
       <div className="p-5">
         <div className="flex items-start justify-between mb-2">
           <div>
-            <h3 className="font-bold text-white text-lg leading-tight">{card.title}</h3>
+            <h3 className="font-bold text-gray-900 text-lg leading-tight">{card.title}</h3>
             <p className="text-xs font-medium mt-0.5" style={{ color: card.accent }}>{card.subtitle}</p>
           </div>
           <ArrowRight size={16} className="text-brand-blue/40 group-hover:text-brand-green group-hover:translate-x-1 transition-all duration-200 mt-1 flex-shrink-0" />
@@ -150,7 +150,7 @@ export default function FeaturesSection({ onSelectFeature }) {
             <Sparkles size={13} className="text-brand-green" />
             <span className="text-brand-blue text-sm font-semibold">AI-Powered Features</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">
+          <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 leading-tight">
             Every Tool You Need<br />
             <span className="shimmer-text">on Match Day</span>
           </h2>

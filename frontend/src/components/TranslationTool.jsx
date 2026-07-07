@@ -51,8 +51,8 @@ export default function TranslationTool() {
       <div className="card">
         <div className="flex items-center gap-3 mb-5">
           <Globe size={20} className="text-[#00A8E0]" />
-          <h2 className="font-semibold text-white text-lg">Multilingual Translator</h2>
-          <span className="badge bg-gray-800 text-gray-400 border border-gray-700">20+ Languages</span>
+          <h2 className="font-semibold text-gray-900 text-lg">Multilingual Translator</h2>
+          <span className="badge bg-gray-50 text-gray-600 border border-gray-200">20+ Languages</span>
         </div>
 
         {/* Sample Announcements */}
@@ -63,7 +63,7 @@ export default function TranslationTool() {
               <button
                 key={i}
                 onClick={() => setText(s)}
-                className="text-left text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 px-3 py-2 rounded-xl transition-all line-clamp-2"
+                className="text-left text-xs bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-3 py-2 rounded-xl transition-all line-clamp-2"
               >
                 {s}
               </button>
@@ -73,7 +73,7 @@ export default function TranslationTool() {
 
         {/* Language Selector */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-400">
+          <div className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-600">
             🇺🇸 English (Source)
           </div>
           <ArrowRight size={20} className="text-gray-500 flex-shrink-0" />
@@ -88,7 +88,7 @@ export default function TranslationTool() {
 
         {/* Text Input */}
         <div className="mb-4">
-          <label className="text-xs text-gray-400 mb-1.5 block">Text to Translate</label>
+          <label className="text-xs text-gray-600 mb-1.5 block">Text to Translate</label>
           <textarea
             className="input resize-none"
             rows={4}
@@ -113,24 +113,24 @@ export default function TranslationTool() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Globe size={18} className="text-[#FFD700]" />
-              <span className="font-semibold text-white">{targetLanguage} Translation</span>
+              <span className="font-semibold text-gray-900">{targetLanguage} Translation</span>
             </div>
             <button
               onClick={copyToClipboard}
-              className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-all"
+              className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all"
             >
               {copied ? <CheckCheck size={14} className="text-green-400" /> : <Copy size={14} />}
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-gray-800/50 rounded-xl p-4">
+            <div className="bg-gray-50/50 rounded-xl p-4">
               <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">Original (English)</div>
-              <p className="text-gray-300 text-sm leading-relaxed">{text}</p>
+              <p className="text-gray-700 text-sm leading-relaxed">{text}</p>
             </div>
             <div className="bg-[#003DA5]/10 border border-[#003DA5]/30 rounded-xl p-4">
               <div className="text-xs text-[#00A8E0] mb-2 uppercase tracking-wider">{targetLanguage}</div>
-              <p className="text-white text-sm leading-relaxed">{translated}</p>
+              <p className="text-gray-900 text-sm leading-relaxed">{translated}</p>
             </div>
           </div>
         </div>

@@ -53,14 +53,14 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
       <div className="card">
         <div className="flex items-center gap-3 mb-5">
           <Clipboard size={20} className="text-[#00A8E0]" />
-          <h2 className="font-semibold text-white text-lg">Volunteer Shift Briefing Generator</h2>
-          {stadium && <span className="badge bg-gray-800 text-gray-400 border border-gray-700">{stadium.name}</span>}
+          <h2 className="font-semibold text-gray-900 text-lg">Volunteer Shift Briefing Generator</h2>
+          {stadium && <span className="badge bg-gray-50 text-gray-600 border border-gray-200">{stadium.name}</span>}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           {/* Role */}
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block flex items-center gap-1">
+            <label className="text-xs text-gray-600 mb-1.5 block flex items-center gap-1">
               <User size={12} /> Volunteer Role
             </label>
             <select className="select" value={role} onChange={e => setRole(e.target.value)}>
@@ -71,7 +71,7 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
 
           {/* Shift */}
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block flex items-center gap-1">
+            <label className="text-xs text-gray-600 mb-1.5 block flex items-center gap-1">
               <Clock size={12} /> Shift
             </label>
             <select className="select" value={shiftTime} onChange={e => setShiftTime(e.target.value)}>
@@ -82,7 +82,7 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
 
           {/* Language */}
           <div>
-            <label className="text-xs text-gray-400 mb-1.5 block">🌐 Briefing Language</label>
+            <label className="text-xs text-gray-600 mb-1.5 block">🌐 Briefing Language</label>
             <select className="select" value={language} onChange={e => setLanguage(e.target.value)}>
               {LANGUAGES.map(l => <option key={l}>{l}</option>)}
             </select>
@@ -99,8 +99,8 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
                 onClick={() => setRole(r)}
                 className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
                   role === r
-                    ? 'bg-[#003DA5] border-[#003DA5] text-white'
-                    : 'bg-gray-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'
+                    ? 'bg-[#003DA5] border-[#003DA5] text-gray-900'
+                    : 'bg-gray-50 border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-500'
                 }`}
               >
                 {r}
@@ -123,11 +123,11 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Clipboard size={18} className="text-[#FFD700]" />
-              <span className="font-semibold text-white">Shift Briefing — {role}</span>
+              <span className="font-semibold text-gray-900">Shift Briefing — {role}</span>
             </div>
             <button
               onClick={downloadBrief}
-              className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-all"
+              className="flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all"
             >
               <Download size={14} /> Download
             </button>
@@ -135,12 +135,12 @@ export default function VolunteerBriefing({ stadiumId, stadium }) {
 
           <div className="flex flex-wrap gap-3 mb-4">
             <span className="badge bg-[#003DA5]/20 text-[#00A8E0] border border-[#003DA5]/40">{role}</span>
-            {shiftTime && <span className="badge bg-gray-800 text-gray-400 border border-gray-700">{shiftTime}</span>}
-            <span className="badge bg-gray-800 text-gray-400 border border-gray-700">{stadium?.name}</span>
-            <span className="badge bg-gray-800 text-gray-400 border border-gray-700">{language}</span>
+            {shiftTime && <span className="badge bg-gray-50 text-gray-600 border border-gray-200">{shiftTime}</span>}
+            <span className="badge bg-gray-50 text-gray-600 border border-gray-200">{stadium?.name}</span>
+            <span className="badge bg-gray-50 text-gray-600 border border-gray-200">{language}</span>
           </div>
 
-          <div className="bg-gray-800/50 rounded-xl p-5">
+          <div className="bg-gray-50/50 rounded-xl p-5">
             <p className="text-gray-200 text-sm leading-relaxed whitespace-pre-wrap">{brief}</p>
           </div>
         </div>

@@ -10,8 +10,8 @@ export const theme = {
   pinkDeep:   '#EC4899',
   red:        '#F87171',
   redDeep:    '#EF4444',
-  bg:         '#0C1B2E',
-  bgDeep:     '#081420',
+  bg:         '#F8FAFC',
+  bgDeep:     '#FFFFFF',
   white:      '#FFFFFF',
 };
 

@@ -56,14 +56,14 @@ export default function CrowdDashboard({ stadiumId }) {
           <button
             key={v.id}
             onClick={() => setSelected(selected === v.id ? null : v.id)}
-            className={`card text-left transition-all hover:border-gray-600 ${
+            className={`card text-left transition-all hover:border-gray-300 ${
               selected === v.id ? 'border-[#003DA5] ring-1 ring-[#003DA5]/50' : ''
             }`}
           >
             <div className="flex items-start justify-between mb-3">
               <div>
-                <div className="font-semibold text-white">{v.name}</div>
-                <div className="text-gray-400 text-xs">{v.city}</div>
+                <div className="font-semibold text-gray-900">{v.name}</div>
+                <div className="text-gray-600 text-xs">{v.city}</div>
               </div>
               <RiskBadge pct={v.occupancyPct} />
             </div>
@@ -72,11 +72,11 @@ export default function CrowdDashboard({ stadiumId }) {
             <div className="mb-3">
               <div className="flex justify-between text-xs mb-1">
                 <span className="text-gray-500">Occupancy</span>
-                <span className="text-white font-medium">
+                <span className="text-gray-900 font-medium">
                   {v.currentOccupancy?.toLocaleString()} / {v.capacity?.toLocaleString()}
                 </span>
               </div>
-              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+              <div className="h-2 bg-gray-50 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all ${
                     v.occupancyPct >= 90 ? 'bg-red-500' :
@@ -86,14 +86,14 @@ export default function CrowdDashboard({ stadiumId }) {
                   style={{ width: `${Math.min(v.occupancyPct, 100)}%` }}
                 />
               </div>
-              <div className="text-right text-xs text-gray-400 mt-0.5">{v.occupancyPct}%</div>
+              <div className="text-right text-xs text-gray-600 mt-0.5">{v.occupancyPct}%</div>
             </div>
 
             {/* Gate Wait Times */}
             <div className="space-y-1">
               {Object.entries(v.waitTimes || {}).slice(0, 3).map(([gate, mins]) => (
                 <div key={gate} className="flex items-center justify-between text-xs">
-                  <span className="text-gray-400">{gate}</span>
+                  <span className="text-gray-600">{gate}</span>
                   <span className={`font-medium ${
                     mins > 15 ? 'text-red-400' : mins > 8 ? 'text-yellow-400' : 'text-green-400'
                   }`}>{mins} min wait</span>
@@ -110,7 +110,7 @@ export default function CrowdDashboard({ stadiumId }) {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Brain size={20} className="text-[#00A8E0]" />
-              <span className="font-semibold text-white">AI Crowd Intelligence — {selectedData.name}</span>
+              <span className="font-semibold text-gray-900">AI Crowd Intelligence — {selectedData.name}</span>
             </div>
             <button
               onClick={() => runAnalysis(selected)}
@@ -144,7 +144,7 @@ export default function CrowdDashboard({ stadiumId }) {
                   mins > 8 ? 'bg-yellow-900/20 border border-yellow-800/40' :
                   'bg-green-900/20 border border-green-800/40'
                 }`}>
-                  <div className="text-xs text-gray-400">{gate}</div>
+                  <div className="text-xs text-gray-600">{gate}</div>
                   <div className={`text-lg font-bold ${
                     mins > 15 ? 'text-red-400' : mins > 8 ? 'text-yellow-400' : 'text-green-400'
                   }`}>{mins}</div>
@@ -156,11 +156,11 @@ export default function CrowdDashboard({ stadiumId }) {
 
           {/* AI Output */}
           {aiAnalysis && (
-            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-4 fade-in-up">
+            <div className="bg-gray-50/50 border border-gray-200 rounded-xl p-4 fade-in-up">
               <div className="flex items-center gap-2 mb-3 text-[#00A8E0] text-sm font-medium">
                 <Brain size={14} /> AI Analysis Report
               </div>
-              <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">{aiAnalysis}</p>
+              <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{aiAnalysis}</p>
             </div>
           )}
 
@@ -170,7 +170,7 @@ export default function CrowdDashboard({ stadiumId }) {
             </div>
           )}
           {loadingAnalysis && (
-            <div className="flex items-center gap-3 text-gray-400 text-sm py-4">
+            <div className="flex items-center gap-3 text-gray-600 text-sm py-4">
               <RefreshCw size={16} className="animate-spin text-[#00A8E0]" />
               Analyzing crowd patterns and generating recommendations...
             </div>

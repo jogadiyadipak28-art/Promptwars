@@ -25,7 +25,7 @@ export default function Header({ viewMode, setViewMode }) {
             <Trophy size={20} className="text-brand-darker" />
           </div>
           <div>
-            <div className="font-black text-white text-lg leading-none tracking-tight flex items-center gap-2">
+            <div className="font-black text-gray-900 text-lg leading-none tracking-tight flex items-center gap-2">
               StadiumAI
               <span className="hidden sm:inline badge bg-brand-green/15 text-brand-green border border-brand-green/25 text-[10px]">
                 <Cpu size={9} /> GENAI
@@ -44,7 +44,7 @@ export default function Header({ viewMode, setViewMode }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-0.5 bg-white/5 border border-brand-blue/15 p-1 rounded-xl">
+          <div className="flex items-center gap-0.5 bg-gray-100 border border-brand-blue/15 p-1 rounded-xl">
             <button
               onClick={() => setViewMode('fan')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
@@ -59,7 +59,7 @@ export default function Header({ viewMode, setViewMode }) {
               onClick={() => setViewMode('ops')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 viewMode === 'ops'
-                  ? 'bg-gradient-to-r from-brand-pink to-brand-red text-white shadow-md'
+                  ? 'bg-gradient-to-r from-brand-pink to-brand-red text-gray-900 shadow-md'
                   : 'text-brand-blue/60 hover:text-brand-pink'
               }`}
             >

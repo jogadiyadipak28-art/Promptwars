@@ -80,7 +80,7 @@ function ShowcaseRow({ item, index, reverse }) {
               <Icon size={18} style={{ color: item.accent }} />
             </div>
             <div>
-              <div className="text-2xl font-black text-white leading-none">{item.stat}</div>
+              <div className="text-2xl font-black text-gray-900 leading-none">{item.stat}</div>
               <div className="text-brand-blue/70 text-xs font-medium">{item.statLabel}</div>
             </div>
           </div>
@@ -100,7 +100,7 @@ function ShowcaseRow({ item, index, reverse }) {
           <Icon size={14} />
           WC 2026
         </div>
-        <h3 className="text-3xl sm:text-4xl font-black text-white leading-tight">{item.title}</h3>
+        <h3 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight">{item.title}</h3>
         <p className="text-brand-blue/70 text-lg leading-relaxed max-w-md">{item.desc}</p>
         <div
           className={`h-1 w-16 rounded-full ${reverse ? 'lg:ml-auto' : ''}`}
@@ -131,7 +131,7 @@ export default function FootballShowcase() {
             <img src={FOOTBALL_ICON} alt="" className="w-5 h-5" aria-hidden="true" />
             <span className="text-brand-green text-sm font-semibold">The Beautiful Game Meets AI</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
+          <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-4">
             Built for the<br />
             <span className="shimmer-text">Greatest Show on Earth</span>
           </h2>

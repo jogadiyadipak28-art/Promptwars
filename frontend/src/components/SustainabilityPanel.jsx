@@ -50,7 +50,7 @@ export default function SustainabilityPanel({ stadiumId, stadium }) {
             <div key={stat.label} className="card text-center">
               <Icon size={24} className={`mx-auto mb-2 ${stat.color}`} />
               <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
-              <div className="text-xs text-gray-400 mt-0.5">{stat.label}</div>
+              <div className="text-xs text-gray-600 mt-0.5">{stat.label}</div>
             </div>
           );
         })}
@@ -59,7 +59,7 @@ export default function SustainabilityPanel({ stadiumId, stadium }) {
       <div className="card">
         <div className="flex items-center gap-3 mb-5">
           <Leaf size={20} className="text-green-400" />
-          <h2 className="font-semibold text-white text-lg">Sustainability Advisor</h2>
+          <h2 className="font-semibold text-gray-900 text-lg">Sustainability Advisor</h2>
           <span className="badge bg-green-900/30 text-green-400 border border-green-800/50">🌍 Green WC 2026</span>
         </div>
 
@@ -71,7 +71,7 @@ export default function SustainabilityPanel({ stadiumId, stadium }) {
               <button
                 key={t.label}
                 onClick={() => { setQuery(t.query); askAdvice(t.query); }}
-                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 text-sm px-3 py-2.5 rounded-xl transition-all text-left"
+                className="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 text-sm px-3 py-2.5 rounded-xl transition-all text-left"
               >
                 <span className="text-lg">{t.icon}</span>
                 <span>{t.label}</span>
@@ -106,7 +106,7 @@ export default function SustainabilityPanel({ stadiumId, stadium }) {
           </div>
         )}
         {loading && (
-          <div className="flex items-center gap-3 text-gray-400 text-sm py-2">
+          <div className="flex items-center gap-3 text-gray-600 text-sm py-2">
             <Loader size={16} className="animate-spin text-green-400" />
             Generating sustainability insights...
           </div>
