@@ -221,5 +221,58 @@ describe('AI Routes', () => {
       expect(res.status).toBe(200);
       expect(res.body.advice).toBeTruthy();
     });
+
+    it('works without stadiumId (uses default)', async () => {
+      const res = await request(app)
+        .post('/api/ai/sustainability')
+        .send({ query: 'What are green initiatives?' });
+      expect(res.status).toBe(200);
+      expect(res.body.advice).toBeTruthy();
+    });
+  });
+
+  // ── Edge Cases & Error Handling ───────────────────────────────────────────
+  describe('Edge Cases - Null/Undefined Safety', () => {
+    it('handles navigation with stadium having minimal gates', async () => {
+      const res = await request(app)
+        .post('/api/ai/navigate')
+        .send({ from: 'Entrance', to: 'Section 100', stadiumId: 'metlife' });
+      expect(res.status).toBe(200);
+      expect(res.body.instructions).toBeTruthy();
+    });
+
+    it('handles crowd analysis with empty waitTimes gracefully', async () => {
+      const res = await request(app)
+        .post('/api/ai/crowd-analysis')
+        .send({ stadiumId: 'metlife' });
+      expect(res.status).toBe(200);
+      expect(res.body.analysis).toBeTruthy();
+      expect(res.body.analysis).toContain('Crowd Analysis');
+    });
+
+    it('handles volunteer briefing with missing facilities data', async () => {
+      const res = await request(app)
+        .post('/api/ai/volunteer-brief')
+        .send({ role: 'Gate Marshal', stadiumId: 'metlife' });
+      expect(res.status).toBe(200);
+      expect(res.body.brief).toBeTruthy();
+      expect(res.body.brief).toContain('SHIFT BRIEFING');
+    });
+
+    it('handles fan assistant with null stadium context', async () => {
+      const res = await request(app)
+        .post('/api/ai/fan-assistant')
+        .send({ message: 'Hello' });
+      expect(res.status).toBe(200);
+      expect(res.body.reply).toBeTruthy();
+    });
+
+    it('handles alert generation without stadium context', async () => {
+      const res = await request(app)
+        .post('/api/ai/generate-alert')
+        .send({ situation: 'Test situation' });
+      expect(res.status).toBe(200);
+      expect(res.body.alert).toBeTruthy();
+    });
   });
 });

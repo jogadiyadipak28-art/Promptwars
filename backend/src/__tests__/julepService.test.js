@@ -75,4 +75,41 @@ describe('smartRespond', () => {
     expect(typeof reply).toBe('string');
     expect(reply.length).toBeGreaterThan(10);
   });
+
+  // ── Edge Cases & Null Safety ─────────────────────────────────────────────
+  it('handles stadium with missing facilities gracefully', () => {
+    const stadiumWithoutFacilities = { ...metlife, facilities: null };
+    const reply = smartRespond('where is medical help?', stadiumWithoutFacilities, metlifeCrowd);
+    expect(typeof reply).toBe('string');
+    expect(reply.length).toBeGreaterThan(10);
+  });
+
+  it('handles stadium with empty facilities arrays', () => {
+    const stadiumWithEmptyFacilities = { ...metlife, facilities: { medicalStations: [], prayerRooms: [] } };
+    const reply = smartRespond('where can I pray?', stadiumWithEmptyFacilities, metlifeCrowd);
+    expect(typeof reply).toBe('string');
+    // When prayerRooms is empty (length 0), it returns generic fallback since no specific data available
+    expect(reply.length).toBeGreaterThan(10);
+  });
+
+  it('handles crowd with empty waitTimes', () => {
+    const crowdWithEmptyWaitTimes = { ...metlifeCrowd, waitTimes: {} };
+    const reply = smartRespond('how crowded is it?', metlife, crowdWithEmptyWaitTimes);
+    expect(typeof reply).toBe('string');
+    expect(reply).toContain('MetLife Stadium');
+  });
+
+  it('handles crowd with empty hotspots array', () => {
+    const crowdWithEmptyHotspots = { ...metlifeCrowd, hotspots: [] };
+    const reply = smartRespond('how crowded is it?', metlife, crowdWithEmptyHotspots);
+    expect(typeof reply).toBe('string');
+    expect(reply).toContain('MetLife Stadium');
+  });
+
+  it('handles transport with empty arrays', () => {
+    const stadiumWithEmptyTransport = { ...metlife, transportation: { subway: [], bus: [], parking: [] } };
+    const reply = smartRespond('how do I get home?', stadiumWithEmptyTransport, metlifeCrowd);
+    expect(typeof reply).toBe('string');
+    expect(reply).toContain('Transport options');
+  });
 });
