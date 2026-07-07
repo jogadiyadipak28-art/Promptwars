@@ -8,6 +8,7 @@
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && node src/server.js",
     "test": "cd backend && npm test",
+    "lint": "cd frontend && npm run lint && cd ../backend && npm run lint",
     "build": "cd frontend && npm install && npm run build",
     "vercel-build": "cd frontend && npm install && npm run build"
   },

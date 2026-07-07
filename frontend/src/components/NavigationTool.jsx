@@ -2,8 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Map, Navigation, Accessibility, ArrowRight, Loader } from 'lucide-react';
 import { navigate } from '../api/client';
-
-const LANGUAGES = ['English', 'Spanish', 'French', 'Portuguese', 'Arabic', 'German'];
+import { LANGUAGES } from '../constants/languages';
 
 const QUICK_ROUTES = [
   { from: 'Main Entrance Gate A', to: 'Section 112' },

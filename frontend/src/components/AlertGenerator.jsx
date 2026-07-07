@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Bell, AlertTriangle, Info, AlertOctagon, Loader, Copy, CheckCheck, Volume2 } from 'lucide-react';
 import { generateAlert } from '../api/client';
 
-const LANGUAGES = ['English', 'Spanish', 'French', 'Portuguese', 'Arabic', 'German', 'Japanese', 'Chinese'];
+import { LANGUAGES } from '../constants/languages';
+import useClipboard from '../hooks/useClipboard';
 
 const SEVERITY_CONFIG = {
   low: { label: 'Low – Informational', color: 'text-blue-400', bg: 'bg-blue-900/20 border-blue-800', icon: Info },
@@ -27,7 +28,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
   const [alert, setAlert] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useClipboard();
   const [history, setHistory] = useState([]);
 
   const handleGenerate = async (sit) => {
@@ -48,13 +49,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
     }
   };
 
-  const copy = () => {
-    navigator.clipboard.writeText(alert).catch(() => {
-      // Clipboard API may be blocked — fail silently
-    });
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const copyAlert = () => copy(alert);
 
   const severityConf = SEVERITY_CONFIG[severity];
   const SevIcon = severityConf.icon;
@@ -146,7 +141,7 @@ export default function AlertGenerator({ stadiumId, stadium }) {
               <span className="font-semibold">Generated Announcement ({severityConf.label})</span>
             </div>
             <div className="flex gap-2">
-              <button onClick={copy} className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-all">
+              <button onClick={copyAlert} className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded-lg transition-all">
                 {copied ? <CheckCheck size={14} className="text-green-400" /> : <Copy size={14} />}
                 {copied ? 'Copied' : 'Copy'}
               </button>

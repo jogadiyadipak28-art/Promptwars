@@ -2,19 +2,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { AlertTriangle, RefreshCw, Brain } from 'lucide-react';
 import { getCrowdData, crowdAnalysis } from '../api/client';
-
-const MOCK_CROWD = [
-  { id: 'metlife', name: 'MetLife Stadium', city: 'East Rutherford, NJ', currentOccupancy: 67800, capacity: 82500, occupancyPct: 82, hotspots: ['Gate C', 'Section 112'], waitTimes: { 'Gate A': 8, 'Gate B': 12, 'Gate C': 22, 'Gate D': 6 } },
-  { id: 'atandt', name: 'AT&T Stadium', city: 'Arlington, TX', currentOccupancy: 71200, capacity: 80000, occupancyPct: 89, hotspots: ['Gate B', 'Plaza Level West'], waitTimes: { 'Gate A': 5, 'Gate B': 18, 'Gate C': 11 } },
-  { id: 'sofi', name: 'SoFi Stadium', city: 'Inglewood, CA', currentOccupancy: 58900, capacity: 70240, occupancyPct: 84, hotspots: ['South Gate'], waitTimes: { 'North': 7, 'South': 20, 'East': 9 } },
-  { id: 'azteca', name: 'Estadio Azteca', city: 'Mexico City', currentOccupancy: 81000, capacity: 87523, occupancyPct: 93, hotspots: ['Puerta Sur', 'Sección 115'], waitTimes: { 'Norte': 10, 'Sur': 25 } },
-  { id: 'bcplace', name: 'BC Place', city: 'Vancouver', currentOccupancy: 49000, capacity: 54500, occupancyPct: 90, hotspots: ['Gate B'], waitTimes: { 'Gate A': 9, 'Gate B': 16 } }
-];
+import {
+  OCCUPANCY_THRESHOLDS,
+  getOccupancyBarClass,
+} from '../constants/occupancy';
 
 function RiskBadge({ pct }) {
-  if (pct >= 90) return <span className="badge bg-red-900/40 text-red-400">🔴 Critical</span>;
-  if (pct >= 80) return <span className="badge bg-yellow-900/40 text-yellow-400">🟡 High</span>;
-  if (pct >= 65) return <span className="badge bg-blue-900/40 text-blue-400">🔵 Medium</span>;
+  if (pct >= OCCUPANCY_THRESHOLDS.CRITICAL) return <span className="badge bg-red-900/40 text-red-400">🔴 Critical</span>;
+  if (pct >= OCCUPANCY_THRESHOLDS.HIGH)     return <span className="badge bg-yellow-900/40 text-yellow-400">🟡 High</span>;
+  if (pct >= OCCUPANCY_THRESHOLDS.MEDIUM)   return <span className="badge bg-blue-900/40 text-blue-400">🔵 Medium</span>;
   return <span className="badge bg-green-900/40 text-green-400">🟢 Low</span>;
 }
 
@@ -23,7 +19,8 @@ RiskBadge.propTypes = {
 };
 
 export default function CrowdDashboard({ stadiumId }) {
-  const [crowdData, setCrowdData] = useState(MOCK_CROWD);
+  const [crowdData, setCrowdData] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
   const [aiAnalysis, setAiAnalysis] = useState('');
   const [loadingAnalysis, setLoadingAnalysis] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -31,7 +28,8 @@ export default function CrowdDashboard({ stadiumId }) {
   useEffect(() => {
     getCrowdData()
       .then(r => setCrowdData(r.data))
-      .catch(() => {}); // use mock on error
+      .catch(() => setCrowdData([]))
+      .finally(() => setLoadingData(false));
   }, []);
 
   useEffect(() => {
@@ -52,6 +50,23 @@ export default function CrowdDashboard({ stadiumId }) {
   }, []);
 
   const selectedData = crowdData.find(c => c.id === selected);
+
+  if (loadingData) {
+    return (
+      <div className="flex items-center justify-center gap-3 text-gray-400 text-sm py-12">
+        <RefreshCw size={16} className="animate-spin text-[#00A8E0]" />
+        Loading live crowd data...
+      </div>
+    );
+  }
+
+  if (!crowdData.length) {
+    return (
+      <div className="text-center text-gray-400 text-sm py-12">
+        Crowd data unavailable. Please check the backend connection.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -85,11 +100,7 @@ export default function CrowdDashboard({ stadiumId }) {
               </div>
               <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all ${
-                    v.occupancyPct >= 90 ? 'bg-red-500' :
-                    v.occupancyPct >= 80 ? 'bg-yellow-500' :
-                    v.occupancyPct >= 65 ? 'bg-blue-500' : 'bg-green-500'
-                  }`}
+                  className={`h-full rounded-full transition-all ${getOccupancyBarClass(v.occupancyPct)}`}
                   style={{ width: `${Math.min(v.occupancyPct, 100)}%` }}
                 />
               </div>

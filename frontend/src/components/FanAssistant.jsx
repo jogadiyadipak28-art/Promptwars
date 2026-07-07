@@ -2,11 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Send, Bot, User, RefreshCw } from 'lucide-react';
 import { fanAssistant } from '../api/client';
-
-const LANGUAGES = [
-  'English', 'Spanish', 'French', 'Portuguese', 'Arabic',
-  'German', 'Japanese', 'Chinese', 'Hindi', 'Italian',
-];
+import { LANGUAGES } from '../constants/languages';
 
 const QUICK_PROMPTS = [
   { id: 'seat',      text: '🗺️ How do I get to my seat?' },

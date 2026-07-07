@@ -46,6 +46,52 @@ const SESSION_PRUNE_INTERVAL_MS = 10 * 60 * 1000;
 /** Maximum history entries per session before pruning */
 const MAX_SESSION_HISTORY = 20;
 
+/** Occupancy percentage thresholds — shared across routes and services */
+const OCCUPANCY_THRESHOLDS = Object.freeze({
+  CRITICAL: 90,
+  HIGH:     80,
+  MEDIUM:   65,
+  /** Crowd-analysis fallback uses slightly different cutoffs */
+  ANALYSIS_CRITICAL: 95,
+  ANALYSIS_HIGH:     85,
+  ANALYSIS_MEDIUM:   70,
+  /** Volunteer briefing risk labels */
+  VOLUNTEER_HIGH: 90,
+  VOLUNTEER_MODERATE: 75,
+});
+
+/**
+ * @param {number} pct
+ * @returns {'critical'|'high'|'medium'|'low'}
+ */
+function getOccupancyLevel(pct) {
+  if (pct >= OCCUPANCY_THRESHOLDS.CRITICAL) return 'critical';
+  if (pct >= OCCUPANCY_THRESHOLDS.HIGH)     return 'high';
+  if (pct >= OCCUPANCY_THRESHOLDS.MEDIUM)   return 'medium';
+  return 'low';
+}
+
+/**
+ * @param {number} pct
+ * @returns {string} emoji risk label for crowd-analysis fallback
+ */
+function getAnalysisRiskLabel(pct) {
+  if (pct >= OCCUPANCY_THRESHOLDS.ANALYSIS_CRITICAL) return '🔴 Critical';
+  if (pct >= OCCUPANCY_THRESHOLDS.ANALYSIS_HIGH)     return '🟡 High';
+  if (pct >= OCCUPANCY_THRESHOLDS.ANALYSIS_MEDIUM)   return '🔵 Medium';
+  return '🟢 Low';
+}
+
+/**
+ * @param {number} pct
+ * @returns {'HIGH'|'MODERATE'|'STANDARD'}
+ */
+function getVolunteerRiskLevel(pct) {
+  if (pct >= OCCUPANCY_THRESHOLDS.VOLUNTEER_HIGH)     return 'HIGH';
+  if (pct >= OCCUPANCY_THRESHOLDS.VOLUNTEER_MODERATE) return 'MODERATE';
+  return 'STANDARD';
+}
+
 module.exports = {
   SEVERITY,
   DEFAULTS,
@@ -54,4 +100,8 @@ module.exports = {
   SESSION_TTL_MS,
   SESSION_PRUNE_INTERVAL_MS,
   MAX_SESSION_HISTORY,
+  OCCUPANCY_THRESHOLDS,
+  getOccupancyLevel,
+  getAnalysisRiskLabel,
+  getVolunteerRiskLevel,
 };

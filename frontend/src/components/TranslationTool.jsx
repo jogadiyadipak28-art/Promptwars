@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Globe, ArrowRight, Copy, CheckCheck, Loader } from 'lucide-react';
 import { translate } from '../api/client';
-
-const LANGUAGES = [
-  'Spanish', 'French', 'Portuguese', 'Arabic', 'German', 'Japanese',
-  'Chinese (Simplified)', 'Hindi', 'Italian', 'Dutch', 'Korean', 'Russian',
-  'Turkish', 'Polish', 'Swedish', 'Danish', 'Greek', 'Hebrew', 'Thai', 'Vietnamese'
-];
+import { TRANSLATION_LANGUAGES } from '../constants/languages';
+import useClipboard from '../hooks/useClipboard';
 
 const SAMPLE_ANNOUNCEMENTS = [
   'Gates will open in 30 minutes. Please make your way to the designated entrance.',
@@ -22,7 +18,7 @@ export default function TranslationTool() {
   const [targetLanguage, setTargetLanguage] = useState('Spanish');
   const [translated, setTranslated] = useState('');
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useClipboard();
   const [error, setError] = useState('');
 
   const handleTranslate = async () => {
@@ -40,13 +36,7 @@ export default function TranslationTool() {
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(translated).catch(() => {
-      // Clipboard API may be unavailable in some contexts — fail silently
-    });
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const copyToClipboard = () => copy(translated);
 
   return (
     <div className="space-y-6">
@@ -85,7 +75,7 @@ export default function TranslationTool() {
             value={targetLanguage}
             onChange={e => setTargetLanguage(e.target.value)}
           >
-            {LANGUAGES.map(l => <option key={l}>{l}</option>)}
+            {TRANSLATION_LANGUAGES.map(l => <option key={l}>{l}</option>)}
           </select>
         </div>
 
@@ -142,3 +132,5 @@ export default function TranslationTool() {
     </div>
   );
 }
+
+TranslationTool.propTypes = {};

@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Trophy, Globe2, Users, Flame } from 'lucide-react';
 import SafeImage from './SafeImage';
 import { SHOWCASE_IMAGES } from '../assets/images';
 import { theme } from '../assets/theme';
+import useInView from '../hooks/useInView';
 
 const PANELS = [
   {
@@ -31,20 +32,6 @@ const PANELS = [
     image: SHOWCASE_IMAGES.fans,
   },
 ];
-
-function useInView(threshold = 0.15) {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, inView];
-}
 
 const panelShape = PropTypes.shape({
   key:   PropTypes.string.isRequired,

@@ -53,6 +53,7 @@ export default function App() {
   const [viewMode, setViewMode]         = useState('fan');
   const [tabChanging, setTabChanging]   = useState(false);
   const appRef = useRef(null);
+  const tabTimerRef = useRef(null);
 
   useEffect(() => {
     getStadiums()
@@ -60,15 +61,22 @@ export default function App() {
       .catch(() => { setStadiums(FALLBACK_STADIUMS); setSelectedStadium(FALLBACK_STADIUMS[0]); });
   }, []);
 
+  useEffect(() => () => {
+    if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
+  }, []);
+
   const scrollToApp = () =>
     appRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const handleTabChange = (tabId) => {
     if (tabId === activeTab) return;
+    if (tabTimerRef.current) clearTimeout(tabTimerRef.current);
     setTabChanging(true);
-    // Store timeout id so React StrictMode double-invoke doesn't leak
-    const t = setTimeout(() => { setActiveTab(tabId); setTabChanging(false); }, 150);
-    return () => clearTimeout(t);
+    tabTimerRef.current = setTimeout(() => {
+      setActiveTab(tabId);
+      setTabChanging(false);
+      tabTimerRef.current = null;
+    }, 150);
   };
 
   const handleFeatureSelect = (tabId) => {

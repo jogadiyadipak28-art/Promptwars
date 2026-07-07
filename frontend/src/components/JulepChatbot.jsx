@@ -2,11 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Send, Bot, User, RefreshCw, Sparkles, Wifi, WifiOff, ChevronDown, X } from 'lucide-react';
 import { chatbotMessage, chatbotReset, chatbotStatus } from '../api/client';
-
-const LANGUAGES = [
-  'English', 'Spanish', 'French', 'Portuguese', 'Arabic',
-  'German', 'Japanese', 'Chinese', 'Hindi', 'Italian', 'Korean', 'Dutch'
-];
+import { LANGUAGES } from '../constants/languages';
 
 const QUICK_PROMPTS = [
   { icon: '🗺️', label: 'Get to my seat', text: 'How do I find my seat from the main entrance?' },

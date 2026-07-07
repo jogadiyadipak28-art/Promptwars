@@ -4,6 +4,7 @@ import { BANNER_IMAGES } from '../assets/images';
 
 const ALL = [...BANNER_IMAGES, ...BANNER_IMAGES];
 
+/** Scrolling image banner — decorative, no interactive props */
 export default function PlayerBanner() {
   return (
     <div
@@ -18,7 +19,7 @@ export default function PlayerBanner() {
       <div className="flex gap-4 scroll-banner" style={{ width: 'max-content' }}>
         {ALL.map((img, i) => (
           <div
-            key={i}
+            key={`${img.src}-${i}`}
             className="relative w-56 h-36 sm:w-64 sm:h-40 flex-shrink-0 rounded-2xl overflow-hidden border border-brand-blue/20 group shadow-xl hover:border-brand-green/40 transition-all duration-300 hover:scale-105"
           >
             <SafeImage

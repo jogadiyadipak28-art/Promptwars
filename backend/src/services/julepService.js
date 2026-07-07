@@ -1,36 +1,19 @@
 /**
  * julepService.js
  *
- * The provided Julep API key (AQ.Ab8RN6KQVn7...) refers to Julep AI,
- * which shut down its cloud service in late 2024 (api.julep.ai now
- * redirects to memory.store).
- *
- * This service provides a fully working AI chatbot via a smart
- * rule-based + context-aware engine that handles all FIFA WC 2026
- * stadium queries without requiring an external API.
- *
- * If you obtain a working OpenAI key, set OPENAI_API_KEY in .env
- * and the service automatically upgrades to GPT responses.
+ * Smart rule-based + context-aware chatbot engine for FIFA WC 2026
+ * stadium queries. Upgrades to GPT responses when OPENAI_API_KEY is set.
  */
 
 'use strict';
 
-const { CROWD_DATA, getStadium } = require('../data/stadiums');
+const { CROWD_DATA, getStadium, calcOccupancy } = require('../data/stadiums');
+const { chatWithHistory, isAvailable } = require('./openaiService');
 const {
   SESSION_TTL_MS,
   SESSION_PRUNE_INTERVAL_MS,
   MAX_SESSION_HISTORY,
 } = require('../constants');
-
-// ── Optional: OpenAI upgrade path ─────────────────────────────────────────
-let openai = null;
-if (process.env.OPENAI_API_KEY) {
-  try {
-    const OpenAI = require('openai');
-    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    console.log('[AI] OpenAI connected — using GPT responses');
-  } catch { /* openai package may not be installed */ }
-}
 
 // ── In-memory session store with TTL expiry ─────────────────────────────
 const sessions = new Map(); // sessionId -> { history, stadiumId, lastUsed }
@@ -135,7 +118,7 @@ const INTENTS = [
     patterns: ['crowd', 'busy', 'congestion', 'wait', 'queue', 'capacity', 'how full'],
     respond: (stadium, crowd) => {
       if (!crowd || !stadium) return '👥 Select a stadium above to see live crowd conditions.';
-      const pct = Math.round((crowd.currentOccupancy / crowd.capacity) * 100);
+      const pct = calcOccupancy(crowd);
       const level = pct >= 90 ? '🔴 Very busy' : pct >= 80 ? '🟡 Busy' : pct >= 65 ? '🔵 Moderate' : '🟢 Comfortable';
       const fastGate = Object.entries(crowd.waitTimes).sort((a, b) => a[1] - b[1])[0];
       return `👥 Current crowd status at ${stadium.name}:\n\n` +
@@ -238,21 +221,15 @@ async function chat(clientSessionId, userMessage, contextHint = '') {
   let reply;
 
   // Try OpenAI if available
-  if (openai) {
-    try {
-      const sysPrompt = contextHint || `You are StadiumAI, the official AI assistant for FIFA World Cup 2026. Be concise and helpful.`;
-      const completion = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        max_tokens: 400,
-        temperature: 0.7,
-        messages: [
-          { role: 'system', content: sysPrompt },
-          ...session.history.slice(-6) // last 3 exchanges
-        ]
-      });
-      reply = completion.choices[0].message.content.trim();
-    } catch (e) {
-      console.warn('[AI] OpenAI failed, falling back to smart engine:', e.message);
+  if (isAvailable()) {
+    const sysPrompt = contextHint || 'You are StadiumAI, the official AI assistant for FIFA World Cup 2026. Be concise and helpful.';
+    const gptReply = await chatWithHistory(sysPrompt, session.history.slice(-6), {
+      temperature: 0.7,
+      max_tokens: 400,
+    });
+    if (gptReply) {
+      reply = gptReply;
+    } else {
       reply = smartRespond(userMessage, stadium, crowd);
     }
   } else {
@@ -270,7 +247,7 @@ async function chat(clientSessionId, userMessage, contextHint = '') {
 }
 
 async function getAgent() {
-  if (openai) return { id: 'openai-gpt4o-mini', provider: 'OpenAI' };
+  if (isAvailable()) return { id: 'openai-gpt4o-mini', provider: 'OpenAI' };
   return { id: 'smart-engine-v1', provider: 'StadiumAI Built-in' };
 }
 

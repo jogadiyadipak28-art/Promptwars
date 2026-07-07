@@ -2,8 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Zap, Users, Accessibility, Loader } from 'lucide-react';
 import { transportRecommend } from '../api/client';
-
-const LANGUAGES = ['English', 'Spanish', 'French', 'Portuguese', 'Arabic', 'German'];
+import { LANGUAGES } from '../constants/languages';
 
 export default function TransportAdvisor({ stadiumId, stadium }) {
   const [origin, setOrigin] = useState('');

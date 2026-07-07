@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Clipboard, User, Clock, Loader, Download } from 'lucide-react';
 import { volunteerBrief } from '../api/client';
+import { LANGUAGES } from '../constants/languages';
 
 const ROLES = [
   'Gate Marshal', 'Accessibility Assistant', 'Medical Support', 'Information Desk',
@@ -13,8 +14,6 @@ const SHIFTS = [
   'Pre-Match (Gates Open -3h)', 'Match Day Morning', 'Match Day Afternoon',
   'Kickoff Window', 'Half Time', 'Post-Match Crowd Dispersal', 'Night Shift'
 ];
-
-const LANGUAGES = ['English', 'Spanish', 'French', 'Portuguese', 'Arabic', 'German'];
 
 export default function VolunteerBriefing({ stadiumId, stadium }) {
   const [role, setRole] = useState('');

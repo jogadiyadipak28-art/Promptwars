@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { MapPin, Users, ChevronRight, Trophy } from 'lucide-react';
 import SafeImage from './SafeImage';
 import { STADIUM_IMAGES, FLAGS } from '../assets/images';
-
-const OCCUPANCY_MOCK = {
-  metlife: 82, atandt: 89, sofi: 84, azteca: 93, bcplace: 90
-};
+import { getCrowdData } from '../api/client';
+import { OCCUPANCY_THRESHOLDS } from '../constants/occupancy';
 
 const MATCHES = [
   { home: 'Brazil', away: 'Argentina', date: 'Jun 14', time: '20:00', stadium: 'MetLife Stadium' },
@@ -50,6 +48,17 @@ function FlagBadge({ country }) {
 
 export default function StadiumSection({ stadiums, selected, onChange }) {
   const [hovered, setHovered] = useState(null);
+  const [occupancyMap, setOccupancyMap] = useState({});
+
+  useEffect(() => {
+    getCrowdData()
+      .then(r => {
+        const map = {};
+        for (const c of r.data) map[c.id] = c.occupancyPct;
+        setOccupancyMap(map);
+      })
+      .catch(() => setOccupancyMap({}));
+  }, []);
 
   if (!stadiums?.length) return null;
 
@@ -72,7 +81,7 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
           {stadiums.map((s, i) => {
-            const occ = OCCUPANCY_MOCK[s.id] || 80;
+            const occ = occupancyMap[s.id] ?? 0;
             const img = STADIUM_IMAGES[s.id];
             const isSelected = selected?.id === s.id;
             const isHovered = hovered === s.id;
@@ -117,7 +126,7 @@ export default function StadiumSection({ stadiums, selected, onChange }) {
                     <span className="text-brand-blue/50 flex items-center gap-1">
                       <Users size={9} /> {(s.capacity / 1000).toFixed(0)}K cap.
                     </span>
-                    <span className={`font-bold ${occ >= 90 ? 'text-brand-red' : occ >= 80 ? 'text-brand-pink' : 'text-brand-green'}`}>
+                    <span className={`font-bold ${occ >= OCCUPANCY_THRESHOLDS.CRITICAL ? 'text-brand-red' : occ >= OCCUPANCY_THRESHOLDS.HIGH ? 'text-brand-pink' : 'text-brand-green'}`}>
                       {occ}%
                     </span>
                   </div>

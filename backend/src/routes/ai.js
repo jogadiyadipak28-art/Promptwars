@@ -15,7 +15,10 @@ const { smartRespond }                                      = require('../servic
 const { CROWD_DATA, getStadium, calcOccupancy, fastestAndSlowestGate } = require('../data/stadiums');
 const { requireFields, requireStadium, optionalStadium, sanitizeHistory } = require('../middleware/validate');
 const { asyncHandler }                                      = require('../middleware/errorHandler');
-const { DEFAULTS, AI_PARAMS, SEVERITY, MAX_HISTORY_TURNS } = require('../constants');
+const {
+  DEFAULTS, AI_PARAMS, SEVERITY, MAX_HISTORY_TURNS,
+  OCCUPANCY_THRESHOLDS, getAnalysisRiskLabel, getVolunteerRiskLevel,
+} = require('../constants');
 
 const router = express.Router();
 
@@ -147,10 +150,7 @@ router.post(
 
     if (analysis) return res.json({ analysis, crowdData: crowd, occupancyPct, stadium: stadium.name });
 
-    const riskLevel =
-      occupancyPct >= 95 ? '🔴 Critical' :
-      occupancyPct >= 85 ? '🟡 High' :
-      occupancyPct >= 70 ? '🔵 Medium' : '🟢 Low';
+    const riskLevel = getAnalysisRiskLabel(occupancyPct);
 
     res.json({
       analysis:
@@ -160,7 +160,7 @@ router.post(
         `**Recommendations:**\n` +
         `1. Direct fans to ${fastGate[0]} (${fastGate[1]} min — fastest)\n` +
         `2. Avoid ${slowGate[0]} (${slowGate[1]} min — slowest)\n` +
-        `3. ${occupancyPct >= 85 ? 'Deploy extra staff to congested zones' : 'Monitor — no action required'}\n\n` +
+        `3. ${occupancyPct >= OCCUPANCY_THRESHOLDS.ANALYSIS_HIGH ? 'Deploy extra staff to congested zones' : 'Monitor — no action required'}\n\n` +
         `**Fan Advisory:** Use ${fastGate[0]}. Avoid ${crowd.hotspots[0] || 'congested zones'}.`,
       crowdData: crowd, occupancyPct, stadium: stadium.name, source: 'smart-engine',
     });
@@ -288,9 +288,7 @@ router.post(
 
     if (brief) return res.json({ brief, role, stadium: stadium.name, shiftTime });
 
-    const riskLevel =
-      occupancyPct >= 90 ? 'HIGH' :
-      occupancyPct >= 75 ? 'MODERATE' : 'STANDARD';
+    const riskLevel = getVolunteerRiskLevel(occupancyPct);
 
     res.json({
       brief:
@@ -302,7 +300,7 @@ router.post(
         `2. Monitor your zone for safety concerns\n` +
         `3. Direct fans to accessible entrances: ${stadium.facilities.accessibleEntrances.join(', ')}\n` +
         `4. Report incidents to control room immediately\n\n` +
-        `Priority: ${occupancyPct >= 85 ? 'High crowd density — extra vigilance required' : 'Normal operations'}\n` +
+        `Priority: ${occupancyPct >= OCCUPANCY_THRESHOLDS.ANALYSIS_HIGH ? 'High crowd density — extra vigilance required' : 'Normal operations'}\n` +
         `Medical stations: ${stadium.facilities.medicalStations.join(', ')}\n\n` +
         `Stay hydrated. Radio check every 30 minutes. Thank you! ⚽`,
       role, stadium: stadium.name, shiftTime, source: 'smart-engine',

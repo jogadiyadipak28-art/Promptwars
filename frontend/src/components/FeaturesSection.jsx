@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Bot, Map, Users, Globe, Zap, Leaf, ArrowRight, Sparkles } from 'lucide-react';
 import SafeImage from './SafeImage';
 import { FEATURE_IMAGES } from '../assets/images';
 import { theme } from '../assets/theme';
+import useInView from '../hooks/useInView';
 
 const FEATURE_CARDS = [
   {
@@ -68,20 +69,6 @@ const FEATURE_CARDS = [
     image: FEATURE_IMAGES.sustainability,
   },
 ];
-
-function useInView(threshold = 0.15) {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return [ref, inView];
-}
 
 function FeatureCard({ card, index, onSelect }) {
   const [ref, inView] = useInView(0.1);
