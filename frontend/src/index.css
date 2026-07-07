@@ -87,12 +87,18 @@
     box-shadow: 0 0 0 1px rgba(74,222,128,0.4);
   }
   .select {
-    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white
+    @apply w-full border border-white/10 rounded-xl px-4 py-3 text-white
            focus:outline-none transition-all cursor-pointer;
+    background: rgba(255,255,255,0.05);
+    color-scheme: dark;
   }
   .select:focus {
     border-color: rgba(125,211,252,0.8);
     box-shadow: 0 0 0 1px rgba(74,222,128,0.4);
+  }
+  .select option {
+    background: #1f2937;
+    color: #ffffff;
   }
   .badge {
     @apply inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full;

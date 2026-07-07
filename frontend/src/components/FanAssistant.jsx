@@ -98,8 +98,13 @@ export default function FanAssistant({ stadiumId }) {
             value={language}
             onChange={e => setLanguage(e.target.value)}
             className="select text-sm py-1.5 w-auto"
+            style={{ colorScheme: 'dark' }}
           >
-            {LANGUAGES.map(l => <option key={l}>{l}</option>)}
+            {LANGUAGES.map(l => (
+              <option key={l} value={l} style={{ background: '#1f2937', color: '#fff' }}>
+                {l}
+              </option>
+            ))}
           </select>
           <button
             aria-label="Reset conversation"

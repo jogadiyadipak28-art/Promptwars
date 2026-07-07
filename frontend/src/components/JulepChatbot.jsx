@@ -190,9 +190,14 @@ export default function JulepChatbot({ stadiumId, stadium, floating = false }) {
             aria-label="Language"
             value={language}
             onChange={e => setLanguage(e.target.value)}
-            className="text-xs bg-gray-800 border border-gray-700 text-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:border-[#003DA5]"
+            className="text-xs bg-gray-800 border border-gray-700 text-white rounded-lg px-2 py-1 focus:outline-none focus:border-[#003DA5]"
+            style={{ colorScheme: 'dark' }}
           >
-            {LANGUAGES.map(l => <option key={l}>{l}</option>)}
+            {LANGUAGES.map(l => (
+              <option key={l} value={l} style={{ background: '#1f2937', color: '#fff' }}>
+                {l}
+              </option>
+            ))}
           </select>
           <button
             aria-label="New conversation"
